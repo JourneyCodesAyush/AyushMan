@@ -1,0 +1,17 @@
+# Bytecode and cache
+__pycache__/
+*.pyc
+
+# Virtual environment or environment config
+.env/
+.venv/
+
+# Build files
+dist/
+build/
+
+# .vscode files
+*.vscode/
+
+# Do NOT ignore source files
+!*.py
