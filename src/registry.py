@@ -5,29 +5,29 @@ from pathlib import Path
 from . import result
 
 if PATH := os.getenv("LOCALAPPDATA"):
-    METADATA_JSON = Path(PATH) / ".ayuman" / "metadata.json"
+    REGISTRY_PATH = Path(PATH) / ".ayuman" / "metadata.json"
 
 
 def _ensure_metadata_file() -> None:
-    METADATA_JSON.parent.mkdir(parents=True, exist_ok=True)
-    if not METADATA_JSON.exists():
-        METADATA_JSON.write_text(json.dumps({"installed_packages": []}, indent=4))
+    REGISTRY_PATH.parent.mkdir(parents=True, exist_ok=True)
+    if not REGISTRY_PATH.exists():
+        REGISTRY_PATH.write_text(json.dumps({"installed_packages": []}, indent=4))
 
 
-def read_metadata() -> dict:
+def _read_metadata() -> dict:
     _ensure_metadata_file()
-    with open(METADATA_JSON, "r") as f:
+    with open(REGISTRY_PATH, "r") as f:
         return json.load(f)
 
 
-def write_metadata(data: dict) -> None:
+def _write_metadata(data: dict) -> None:
     _ensure_metadata_file()
-    with open(METADATA_JSON, "w") as f:
+    with open(REGISTRY_PATH, "w") as f:
         json.dump(data, f, indent=4)
 
 
 def add_package(install_result: result.InstallResult):
-    data = read_metadata()
+    data = _read_metadata()
 
     data["installed_packages"] = [
         pkg
@@ -44,4 +44,4 @@ def add_package(install_result: result.InstallResult):
             "metadata_path": install_result.metadata_path,
         }
     )
-    write_metadata(data)
+    _write_metadata(data)
