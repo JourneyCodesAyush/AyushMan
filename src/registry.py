@@ -45,3 +45,13 @@ def add_package(install_result: result.InstallResult):
         }
     )
     _write_metadata(data)
+
+
+def list_package() -> list[str]:
+    data = _read_metadata()
+
+    package_list: list[str] = []
+    for pkg in data["installed_packages"]:
+        package_list.append(f"{pkg['name']} {pkg['version']}")
+
+    return package_list
