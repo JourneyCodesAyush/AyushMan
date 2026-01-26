@@ -12,6 +12,8 @@ def main():
     install_parser = subparsers.add_parser("install", help="Install a package")
     install_parser.add_argument("pkg", help="Package to install")
 
+    list_parser = subparsers.add_parser("list", help="List all the installed packages")
+
     args = parser.parse_args()
 
     match args.command:
@@ -31,6 +33,11 @@ def main():
                     registry.add_package(result_obj)
                 else:
                     print(f"Extraction failed: {result_obj.error_message}")
+
+        case "list":
+            package_list: list[str] = registry.list_package()
+            for pkg in package_list:
+                print(pkg)
 
         case _:
             print("Invalid arguments")
