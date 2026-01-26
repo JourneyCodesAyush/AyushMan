@@ -2,10 +2,10 @@ import json
 import os
 from pathlib import Path
 
-from . import result
+from . import result, global_paths
 
-if PATH := os.getenv("LOCALAPPDATA"):
-    REGISTRY_PATH = Path(PATH) / ".ayuman" / "metadata.json"
+
+REGISTRY_PATH = global_paths.GLOBAL_METADATA
 
 
 def _ensure_metadata_file() -> None:

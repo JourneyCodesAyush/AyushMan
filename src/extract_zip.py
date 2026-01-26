@@ -3,27 +3,16 @@ import os
 import zipfile
 from pathlib import Path
 
-from . import result
+from . import global_paths, result
 
 
 def extract_zip_file(install_result: result.InstallResult):
 
-    local_app_data = os.getenv("LOCALAPPDATA")
-    if not local_app_data:
-        install_result.success = False
-        install_result.error_message = "LOCALAPPDATA not set"
-
-        return install_result
-
     package_folder = (
-        Path(local_app_data)
-        / ".ayuman"
-        / "packages"
-        / install_result.package_name
-        / install_result.version
+        global_paths.PACKAGE_DIR / install_result.package_name / install_result.version
     )
 
-    bin_folder = Path(local_app_data) / ".ayuman" / "bin"
+    bin_folder = global_paths.BIN_DIR
 
     os.makedirs(package_folder, exist_ok=True)
     os.makedirs(bin_folder, exist_ok=True)
