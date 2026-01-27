@@ -38,7 +38,7 @@ def main():
             package_list: list[str] = registry.list_package()
             for pkg in package_list:
                 print(pkg)
-
+            print(f"{len(package_list)} packages installed.")
         case _:
             print("Invalid arguments")
 
