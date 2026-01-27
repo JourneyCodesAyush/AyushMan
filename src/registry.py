@@ -1,9 +1,6 @@
 import json
-import os
-from pathlib import Path
 
-from . import result, global_paths
-
+from . import global_paths, result
 
 REGISTRY_PATH = global_paths.GLOBAL_METADATA
 
@@ -55,3 +52,11 @@ def list_package() -> list[str]:
         package_list.append(f"{pkg['name']} {pkg['version']}")
 
     return package_list
+
+
+def get_installed_version(package_name: str) -> str:
+    data: dict = _read_metadata()
+    for pkg in data["installed_packages"]:
+        if pkg["name"] == package_name:
+            return pkg["version"]
+    return ""

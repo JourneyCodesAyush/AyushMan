@@ -1,4 +1,6 @@
 import argparse
+import os
+from pathlib import Path
 
 from . import extract_zip, registry, request_url, result, validation
 
@@ -25,6 +27,17 @@ def main():
                 if not result_obj.success:
                     print(f"Download failed: {result_obj.error_message}")
 
+                installed_version: str = registry.get_installed_version(
+                    str(args.pkg).lower()
+                )
+
+                if installed_version == result_obj.version:
+                    print(f"{args.pkg} is already up to date.")
+
+                    if Path(result_obj.zip_file_name).exists():
+                        os.remove(result_obj.zip_file_name)
+                    return
+
                 result_obj = extract_zip.extract_zip_file(install_result=result_obj)
                 if result_obj.success:
                     print(
@@ -33,7 +46,8 @@ def main():
                     registry.add_package(result_obj)
                 else:
                     print(f"Extraction failed: {result_obj.error_message}")
-
+                if Path(result_obj.zip_file_name).exists():
+                    os.remove(result_obj.zip_file_name)
         case "list":
             package_list: list[str] = registry.list_package()
             for pkg in package_list:
