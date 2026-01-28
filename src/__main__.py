@@ -2,7 +2,7 @@ import argparse
 import os
 from pathlib import Path
 
-from . import extract_zip, registry, request_url, result, validation
+from . import extract_zip, registry, request_url, result, uninstall, validation
 
 
 def main():
@@ -15,6 +15,9 @@ def main():
     install_parser.add_argument("pkg", help="Package to install")
 
     list_parser = subparsers.add_parser("list", help="List all the installed packages")
+
+    uninstall_parser = subparsers.add_parser("uninstall", help="Uninstall a package")
+    uninstall_parser.add_argument("pkg", help="Package to uninstall")
 
     args = parser.parse_args()
 
@@ -53,6 +56,17 @@ def main():
             for pkg in package_list:
                 print(pkg)
             print(f"{len(package_list)} packages installed.")
+        case "uninstall":
+            result_obj_uninstall: result.UninstallResult = uninstall.uninstall_package(
+                str(args.pkg).lower()
+            )
+            removed: bool = registry.remove_package(
+                result_obj_uninstall.package_name
+            )
+            if removed:
+                print(f"Uninstalled {result_obj_uninstall.package_name}")
+            else:
+                print(f"{str(args.pkg).lower()} is not installed")
         case _:
             print("Invalid arguments")
 
