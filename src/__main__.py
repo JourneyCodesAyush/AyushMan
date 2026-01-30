@@ -5,6 +5,55 @@ from pathlib import Path
 from . import extract_zip, registry, request_url, result, uninstall, validation
 
 
+def handle_install(package_name: str) -> None:
+    if validation.validate(package_name):
+        result_obj: result.InstallResult = request_url.download_zip(
+            str(package_name).lower()
+        )
+        if not result_obj.success:
+            print(f"Download failed: {result_obj.error_message}")
+
+        installed_version: str = registry.get_installed_version(
+            str(package_name).lower()
+        )
+
+        if installed_version == result_obj.version:
+            print(f"{package_name} is already up to date.")
+
+            if Path(result_obj.zip_file_name).exists():
+                os.remove(result_obj.zip_file_name)
+            return
+
+        result_obj = extract_zip.extract_zip_file(install_result=result_obj)
+        if result_obj.success:
+            print(
+                f"Installed {result_obj.package_name} {result_obj.version} to {result_obj.install_path}"
+            )
+            registry.add_package(result_obj)
+        else:
+            print(f"Extraction failed: {result_obj.error_message}")
+        if Path(result_obj.zip_file_name).exists():
+            os.remove(result_obj.zip_file_name)
+
+
+def handle_list() -> None:
+    package_list: list[str] = registry.list_package()
+    for pkg in package_list:
+        print(pkg)
+    print(f"{len(package_list)} packages installed.")
+
+
+def handle_uninstall(package_name: str) -> None:
+    result_obj_uninstall: result.UninstallResult = uninstall.uninstall_package(
+        str(package_name).lower()
+    )
+    removed: bool = registry.remove_package(result_obj_uninstall.package_name)
+    if removed:
+        print(f"Uninstalled {result_obj_uninstall.package_name}")
+    else:
+        print(f"{str(package_name).lower()} is not installed")
+
+
 def main():
     parser: argparse.ArgumentParser = argparse.ArgumentParser(
         description="A simple package manager called 'ayuman' to install executables from github.com/journeycodesayush repos"
@@ -23,50 +72,11 @@ def main():
 
     match args.command:
         case "install":
-            if validation.validate(args.pkg):
-                result_obj: result.InstallResult = request_url.download_zip(
-                    str(args.pkg).lower()
-                )
-                if not result_obj.success:
-                    print(f"Download failed: {result_obj.error_message}")
-
-                installed_version: str = registry.get_installed_version(
-                    str(args.pkg).lower()
-                )
-
-                if installed_version == result_obj.version:
-                    print(f"{args.pkg} is already up to date.")
-
-                    if Path(result_obj.zip_file_name).exists():
-                        os.remove(result_obj.zip_file_name)
-                    return
-
-                result_obj = extract_zip.extract_zip_file(install_result=result_obj)
-                if result_obj.success:
-                    print(
-                        f"Installed {result_obj.package_name} {result_obj.version} to {result_obj.install_path}"
-                    )
-                    registry.add_package(result_obj)
-                else:
-                    print(f"Extraction failed: {result_obj.error_message}")
-                if Path(result_obj.zip_file_name).exists():
-                    os.remove(result_obj.zip_file_name)
+            handle_install(args.pkg)
         case "list":
-            package_list: list[str] = registry.list_package()
-            for pkg in package_list:
-                print(pkg)
-            print(f"{len(package_list)} packages installed.")
+            handle_list()
         case "uninstall":
-            result_obj_uninstall: result.UninstallResult = uninstall.uninstall_package(
-                str(args.pkg).lower()
-            )
-            removed: bool = registry.remove_package(
-                result_obj_uninstall.package_name
-            )
-            if removed:
-                print(f"Uninstalled {result_obj_uninstall.package_name}")
-            else:
-                print(f"{str(args.pkg).lower()} is not installed")
+            handle_uninstall(args.pkg)
         case _:
             print("Invalid arguments")
 
