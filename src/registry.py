@@ -75,3 +75,14 @@ def remove_package(package_name: str) -> bool:
     if removed:
         _write_metadata(data)
     return removed
+
+
+def set_bin_in_path(value: bool) -> None:
+    data: dict = _read_metadata()
+    data["bin_in_path"] = value
+    _write_metadata(data)
+
+
+def get_bin_in_path() -> bool:
+    data: dict = _read_metadata()
+    return data.get("bin_in_path", False)
