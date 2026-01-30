@@ -2,7 +2,15 @@ import argparse
 import os
 from pathlib import Path
 
-from . import extract_zip, registry, request_url, result, uninstall, validation
+from . import (
+    add_path,
+    extract_zip,
+    registry,
+    request_url,
+    result,
+    uninstall,
+    validation,
+)
 
 
 def handle_install(package_name: str) -> None:
@@ -73,6 +81,9 @@ def main():
     match args.command:
         case "install":
             handle_install(args.pkg)
+            if not registry.get_bin_in_path():
+                add_path.add_to_path()
+                registry.set_bin_in_path(True)
         case "list":
             handle_list()
         case "uninstall":
