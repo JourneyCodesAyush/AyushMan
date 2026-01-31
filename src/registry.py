@@ -62,6 +62,14 @@ def get_installed_version(package_name: str) -> str:
     return ""
 
 
+def get_package(package_name: str) -> bool:
+    data: dict = _read_metadata()
+    for pkg in data["installed_packages"]:
+        if pkg["name"] == package_name:
+            return True
+    return False
+
+
 def remove_package(package_name: str) -> bool:
     data: dict = _read_metadata()
 
