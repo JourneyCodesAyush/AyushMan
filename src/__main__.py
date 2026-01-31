@@ -32,6 +32,13 @@ def handle_install(package_name: str) -> None:
                 os.remove(result_obj.zip_file_name)
             return
 
+        if installed_version:
+            print(
+                f"Upgrading {package_name} from {installed_version} → {result_obj.version}"
+            )
+        else:
+            print(f"Installing {package_name} {result_obj.version}")
+
         result_obj = extract_zip.extract_zip_file(install_result=result_obj)
         if result_obj.success:
             print(
@@ -62,6 +69,14 @@ def handle_uninstall(package_name: str) -> None:
         print(f"{str(package_name).lower()} is not installed")
 
 
+def handle_upgrade(package_name: str) -> None:
+    package_installed = registry.get_package(package_name)
+    if package_installed:
+        handle_install(package_name)
+    else:
+        print(f"{package_name} does not exist.")
+
+
 def main():
     parser: argparse.ArgumentParser = argparse.ArgumentParser(
         description="A simple package manager called 'ayuman' to install executables from github.com/journeycodesayush repos"
@@ -76,6 +91,9 @@ def main():
     uninstall_parser = subparsers.add_parser("uninstall", help="Uninstall a package")
     uninstall_parser.add_argument("pkg", help="Package to uninstall")
 
+    upgrade_parser = subparsers.add_parser("upgrade", help="Upgrade a package")
+    upgrade_parser.add_argument("pkg", help="Package to upgrade")
+
     args = parser.parse_args()
 
     match args.command:
@@ -88,6 +106,8 @@ def main():
             handle_list()
         case "uninstall":
             handle_uninstall(args.pkg)
+        case "upgrade":
+            handle_upgrade(args.pkg)
         case _:
             print("Invalid arguments")
 
