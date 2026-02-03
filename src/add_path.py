@@ -1,9 +1,7 @@
+import ctypes
 import os
 import winreg
 from pathlib import Path
-
-
-import ctypes
 
 
 def get_local_app_data():
@@ -13,8 +11,8 @@ def get_local_app_data():
     return Path(value)
 
 
-AYUMAN_DIR = get_local_app_data() / ".ayuman"
-BIN_DIR = AYUMAN_DIR / "bin"
+AYUSHMAN_DIR = get_local_app_data() / ".ayushman"
+BIN_DIR = AYUSHMAN_DIR / "bin"
 
 
 def get_user_path():

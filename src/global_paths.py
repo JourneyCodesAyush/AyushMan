@@ -1,5 +1,4 @@
 import os
-
 from pathlib import Path
 
 
@@ -10,8 +9,8 @@ def _get_local_app_data():
     return Path(value)
 
 
-AYUMAN_DIR = _get_local_app_data() / ".ayuman"
+AYUSHMAN_DIR = _get_local_app_data() / ".ayushman"
 
-PACKAGE_DIR = AYUMAN_DIR / "packages"
-BIN_DIR = AYUMAN_DIR / "bin"
-GLOBAL_METADATA = AYUMAN_DIR / "metadata.json"
+PACKAGE_DIR = AYUSHMAN_DIR / "packages"
+BIN_DIR = AYUSHMAN_DIR / "bin"
+GLOBAL_METADATA = AYUSHMAN_DIR / "metadata.json"

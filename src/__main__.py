@@ -79,7 +79,7 @@ def handle_upgrade(package_name: str) -> None:
 
 def main():
     parser: argparse.ArgumentParser = argparse.ArgumentParser(
-        description="A simple package manager called 'ayuman' to install executables from github.com/journeycodesayush repos"
+        description="A simple package manager called 'ayushman' to install executables from github.com/journeycodesayush repos"
     )
 
     subparsers = parser.add_subparsers(dest="command", required=True)

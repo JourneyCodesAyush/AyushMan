@@ -1,6 +1,6 @@
-# ayuman
+# AyushMan
 
-**ayuman** is a minimal, Windows-only binary installer for ZIP-based GitHub releases from [author](https://github.com/JourneyCodesAyush)’s repositories.
+**AyushMan** is a minimal, Windows-only binary installer for ZIP-based GitHub releases from [author](https://github.com/JourneyCodesAyush)’s repositories.
 
 > Installs prebuilt, versioned Windows binaries from the [author](https://github.com/JourneyCodesAyush)’s GitHub releases, safely and with minimal fuss.
 
@@ -8,7 +8,7 @@ It installs prebuilt executables directly from GitHub and keeps them isolated,
 versioned, and upgrade-safe.
 
 > [!WARNING]
-> `ayuman` is **NOT** a general-purpose package manager.
+> `AyushMan` is **NOT** a general-purpose package manager.
 
 ---
 
@@ -35,16 +35,16 @@ versioned, and upgrade-safe.
 ## Installation
 
 > [!NOTE]
-> Currently, `ayuman` runs as a Python module (`python -m src`).
+> Currently, `ayushman` runs as a Python module (`python -m src`).
 > No standalone executable is provided yet.
 
-To install and run `ayuman` locally:
+To install and run `ayushman` locally:
 
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/JourneyCodesAyush/ayuman.git
-   cd ayuman
+   git clone https://github.com/JourneyCodesAyush/ayushman.git
+   cd ayushman
    ```
 
 2. (Recommended) Create and activate a virtual environment:
@@ -88,13 +88,13 @@ python -m src uninstall pdf-toolkit
 
 ## Installation directory layout
 
-All ayuman data is stored in `~/.ayuman/`.
+All ayushman data is stored in `~/.ayushman/`.
 
-> The `ayuman` executable itself can live anywhere.
-> No executable is provided so far for `ayuman` itself
+> The `ayushman` executable itself can live anywhere.
+> No executable is provided so far for `AyushMan` itself
 
 ```text
-~/.ayuman/
+~/.ayushman/
 ├── bin/
 │   └── <pkg>.exe               # hard-linked executable
 ├── packages/
@@ -113,10 +113,10 @@ All ayuman data is stored in `~/.ayuman/`.
 
 ## PATH handling
 
-Executables are exposed via `~/.ayuman/bin`.
+Executables are exposed via `~/.ayushman/bin`.
 
 > [!NOTE]
-> `~/.ayuman/bin` is automatically added to the **user PATH** on first run.
+> `~/.ayushman/bin` is automatically added to the **user PATH** on first run.
 > This makes installed executables immediately available in new terminal sessions,
 > without modifying system-level PATH variables.
 
@@ -146,26 +146,26 @@ python -m src uninstall pdf-toolkit
 All operations are safe to re-run and designed to be idempotent.
 
 > [!TIP]
-> After adding `~/.ayuman/bin` to PATH, all installed executables behave like any other CLI tool.
+> After adding `~/.ayushman/bin` to PATH, all installed executables behave like any other CLI tool.
 
 ---
 
 ## Scope
 
-ayuman is intentionally small in scope:
+AyushMan is intentionally small in scope:
 
 - No dependency resolution
 - No source builds
 - No cross-platform support
 - No package ecosystem or central registry
 
-ayuman is designed for installing **trusted prebuilt Windows binaries** - not for managing software ecosystems.
+AyushMan is designed for installing **trusted prebuilt Windows binaries** - not for managing software ecosystems.
 
 ---
 
 ## Philosophy
 
-For a deeper explanation of why `ayuman` works this way, its design principles, and the [author](https://github.com/JourneyCodesAyush)’s philosophy on package management, see [PHILOSOPHY.md](PHILOSOPHY.md).
+For a deeper explanation of why `AyushMan` works this way, its design principles, and the [author](https://github.com/JourneyCodesAyush)’s philosophy on package management, see [PHILOSOPHY.md](PHILOSOPHY.md).
 
 ---
 
