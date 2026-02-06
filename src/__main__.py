@@ -14,41 +14,42 @@ from . import (
 
 
 def handle_install(package_name: str) -> None:
-    if validation.validate(package_name):
-        result_obj: result.InstallResult = request_url.download_zip(
-            str(package_name).lower()
-        )
-        if not result_obj.success:
-            print(f"Download failed: {result_obj.error_message}")
+    if not validation.validate(package_name):
+        print(f"{package_name} not found in github.com/journeycodesayush")
+        return
 
-        installed_version: str = registry.get_installed_version(
-            str(package_name).lower()
-        )
+    result_obj: result.InstallResult = request_url.download_zip(
+        str(package_name).lower()
+    )
+    if not result_obj.success:
+        print(f"Download failed: {result_obj.error_message}")
 
-        if installed_version == result_obj.version:
-            print(f"{package_name} is already up to date.")
+    installed_version: str = registry.get_installed_version(str(package_name).lower())
 
-            if Path(result_obj.zip_file_name).exists():
-                os.remove(result_obj.zip_file_name)
-            return
-
-        if installed_version:
-            print(
-                f"Upgrading {package_name} from {installed_version} → {result_obj.version}"
-            )
-        else:
-            print(f"Installing {package_name} {result_obj.version}")
-
-        result_obj = extract_zip.extract_zip_file(install_result=result_obj)
-        if result_obj.success:
-            print(
-                f"Installed {result_obj.package_name} {result_obj.version} to {result_obj.install_path}"
-            )
-            registry.add_package(result_obj)
-        else:
-            print(f"Extraction failed: {result_obj.error_message}")
+    if installed_version == result_obj.version:
+        print(f"{package_name} is already up to date.")
         if Path(result_obj.zip_file_name).exists():
             os.remove(result_obj.zip_file_name)
+            return
+
+    if installed_version:
+        print(
+            f"Upgrading {package_name} from {installed_version} → {result_obj.version}"
+        )
+    else:
+        print(f"Installing {package_name} {result_obj.version}")
+
+    result_obj = extract_zip.extract_zip_file(install_result=result_obj)
+
+    if result_obj.success:
+        print(
+            f"Installed {result_obj.package_name} {result_obj.version} to {result_obj.install_path}"
+        )
+        registry.add_package(result_obj)
+    else:
+        print(f"Extraction failed: {result_obj.error_message}")
+    if Path(result_obj.zip_file_name).exists():
+        os.remove(result_obj.zip_file_name)
 
 
 def handle_list() -> None:
