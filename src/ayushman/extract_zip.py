@@ -30,9 +30,10 @@ def extract_zip_file(install_result: result.InstallResult):
 
                 target_path = package_folder / filename
                 hardlink_path = bin_folder / filename
-                with zip_ref.open(file_info) as source, open(
-                    target_path, "wb"
-                ) as target:
+                with (
+                    zip_ref.open(file_info) as source,
+                    open(target_path, "wb") as target,
+                ):
                     target.write(source.read())
 
                 # Delete old hard link if it exists, would be handy while implementing 'upgrade'
