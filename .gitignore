@@ -13,5 +13,7 @@ build/
 # .vscode files
 *.vscode/
 
+*.egg-info
+
 # Do NOT ignore source files
 !*.py
