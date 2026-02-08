@@ -70,6 +70,14 @@ def get_package(package_name: str) -> bool:
     return False
 
 
+def get_package_metadata(package_name: str) -> dict:
+    data: dict = _read_metadata()
+    for pkg in data["installed_packages"]:
+        if pkg["name"] == package_name:
+            return pkg
+    return {}
+
+
 def remove_package(package_name: str) -> bool:
     data: dict = _read_metadata()
 

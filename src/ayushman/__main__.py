@@ -78,6 +78,16 @@ def handle_upgrade(package_name: str) -> None:
         print(f"{package_name} does not exist.")
 
 
+def handle_info(package_name: str) -> None:
+    package_info = registry.get_package_metadata(package_name)
+    # print(package_info)
+    if not package_info:
+        print(f"No package named '{package_name}'")
+        return
+    for key, value in package_info.items():
+        print(f"{key}: {value}")
+
+
 def main():
     parser: argparse.ArgumentParser = argparse.ArgumentParser(
         description="A simple package manager called 'ayushman' to install executables from github.com/journeycodesayush repos"
@@ -95,6 +105,9 @@ def main():
     upgrade_parser = subparsers.add_parser("upgrade", help="Upgrade a package")
     upgrade_parser.add_argument("pkg", help="Package to upgrade")
 
+    info_parser = subparsers.add_parser("info", help="Get info of a package")
+    info_parser.add_argument("pkg", help="Package to get info of")
+
     args = parser.parse_args()
 
     match args.command:
@@ -109,6 +122,8 @@ def main():
             handle_uninstall(args.pkg)
         case "upgrade":
             handle_upgrade(args.pkg)
+        case "info":
+            handle_info(args.pkg)
         case _:
             print("Invalid arguments")
 
