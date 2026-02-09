@@ -1,0 +1,26 @@
+[project]
+name = "ayushman"
+version = "0.1.0"
+description = "A minimal Windows-only package manager for prebuilt GitHub executables"
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [
+    { name = "JourneyCodesAyush", email = "journeycodes.ayush@gmail.com" }
+]
+license = { file = "LICENSE" }
+dependencies = [
+    "requests"
+]
+
+[project.scripts]
+ayushman = "ayushman.__main__:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project.optional-dependencies]
+dev = ["black", "isort"]
