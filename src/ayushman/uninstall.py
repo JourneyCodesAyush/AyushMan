@@ -1,3 +1,19 @@
+"""
+Uninstallation utilities for ayushman.
+
+This module provides functions to safely remove installed packages
+and their associated binaries from the system. It handles:
+
+    - Deletion of versioned package folders.
+    - Removal of hard links in the ayushman bin directory.
+    - Reporting of operation results via the UninstallResult object.
+
+Note:
+    - This module focuses only on filesystem cleanup.
+    - Updates to registry or global metadata should be handled separately
+      via the registry module.
+"""
+
 import os
 import shutil
 
@@ -5,6 +21,31 @@ from . import global_paths, result
 
 
 def uninstall_package(package_name: str):
+    """
+    Uninstall a package and remove its binaries from the system.
+
+    Args:
+        package_name (str): Name of the package to uninstall.
+
+    Returns:
+        UninstallResult: Object containing:
+            - package_name: Name of the package uninstalled
+            - versions: List of versions that were removed
+            - removed_bins: List of executable paths deleted from the bin folder
+            - removed_packages: List of package folders deleted
+            - success: True if uninstallation succeeded, False otherwise
+            - error_message: Error message if uninstallation failed
+
+    Side effects:
+        - Deletes all versioned folders of the package from the package directory.
+        - Deletes associated hard links in the bin directory.
+        - Creates no side effects outside of ayushman's directories.
+
+    Failure modes:
+        Any exception during file deletion or folder removal will set success
+        to False and populate error_message.
+    """
+
     package_folder = global_paths.PACKAGE_DIR / package_name
     bin_folder = global_paths.BIN_DIR
 

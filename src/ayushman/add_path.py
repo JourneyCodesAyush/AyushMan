@@ -1,3 +1,15 @@
+"""
+Windows PATH management for ayushman.
+
+This module provides utilities to manage the user's PATH environment
+variable on Windows. It ensures that the ayushman bin directory is
+added to the user PATH in a safe, idempotent manner and notifies the
+system of the change so that new terminals pick up the updated PATH.
+
+All modifications are limited to the current user's environment and
+do not require administrator privileges.
+"""
+
 import ctypes
 import os
 import winreg
@@ -5,6 +17,16 @@ from pathlib import Path
 
 
 def get_local_app_data():
+    """
+    Retrieve the LOCALAPPDATA directory as a Path object.
+
+    Returns:
+        Path: The path to the user's LOCALAPPDATA directory.
+
+    Raises:
+        ValueError: If the LOCALAPPDATA environment variable is not set.
+    """
+
     value = os.getenv("LOCALAPPDATA")
     if not value:
         raise ValueError("LOCALAPPDATA is not set")
@@ -16,6 +38,12 @@ BIN_DIR = AYUSHMAN_DIR / "bin"
 
 
 def get_user_path():
+    """
+    Get the current user's PATH environment variable from the Windows registry.
+
+    Returns:
+        str: The user's PATH value.
+    """
     with winreg.OpenKey(
         winreg.HKEY_CURRENT_USER, "Environment", 0, winreg.KEY_READ
     ) as key:
@@ -24,6 +52,13 @@ def get_user_path():
 
 
 def set_user_path(new_path: str):
+    """
+    Set the user's PATH environment variable in the Windows registry.
+
+    Args:
+        new_path (str): The new PATH value to set.
+    """
+
     with winreg.OpenKey(
         winreg.HKEY_CURRENT_USER, "Environment", 0, winreg.KEY_SET_VALUE
     ) as key:
@@ -31,10 +66,33 @@ def set_user_path(new_path: str):
 
 
 def normalize(p: str) -> str:
+    """
+    Normalize a filesystem path for consistent comparison.
+
+    Args:
+        p (str): Path string to normalize.
+
+    Returns:
+        str: Normalized path (case-insensitive and standardized separators).
+    """
+
     return os.path.normcase(os.path.normpath(p))
 
 
 def add_to_path():
+    """
+    Add ayushman's bin directory to the user's PATH if it is not already present.
+
+    Side effects:
+        - Updates the Windows registry for the current user's PATH.
+        - Broadcasts a system message to notify open applications of the change.
+        - Prints messages indicating whether the path was added or already present.
+
+    Behavior:
+        - Checks the current PATH and avoids adding duplicates.
+        - Uses ctypes to send WM_SETTINGCHANGE after updating the registry.
+    """
+
     bin_path = str(BIN_DIR)
 
     path_value = get_user_path()

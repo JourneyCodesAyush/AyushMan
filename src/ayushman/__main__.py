@@ -1,3 +1,21 @@
+"""
+Command-line interface for ayushman.
+
+This module implements the CLI for ayushman, a minimal Windows-only
+package manager that installs prebuilt executables from
+github.com/journeycodesayush repositories.
+
+Available commands:
+    - install <pkg>: Downloads and installs a package
+    - list: Lists all installed packages
+    - uninstall <pkg>: Uninstalls a package
+    - upgrade <pkg>: Upgrades a package to the latest version
+    - info <pkg>: Shows metadata for a package
+
+Each command delegates functionality to appropriate modules, ensuring
+installations are upgrade-safe, paths are updated, and metadata is tracked.
+"""
+
 import argparse
 import os
 from pathlib import Path
@@ -14,6 +32,24 @@ from . import (
 
 
 def handle_install(package_name: str) -> None:
+    """
+    Install or upgrade a package.
+
+    Args:
+        package_name (str): Name of the package to install or upgrade.
+
+    Behavior:
+        - Validates the package exists in the trusted repository.
+        - Downloads the latest release ZIP.
+        - Skips installation if the latest version is already installed.
+        - Extracts `.exe` files to versioned package folder and creates hard links.
+        - Updates global metadata.
+        - Cleans up the downloaded ZIP file.
+
+    Raises:
+        None
+    """
+
     if not validation.validate(package_name):
         print(f"{package_name} not found in github.com/journeycodesayush")
         return
@@ -53,6 +89,22 @@ def handle_install(package_name: str) -> None:
 
 
 def handle_list() -> None:
+    """
+    List all installed packages.
+
+    Prints each installed package in 'name version' format and
+    the total count of installed packages.
+
+    Args:
+        None
+
+    Returns:
+        None
+
+    Raises:
+        None
+    """
+
     package_list: list[str] = registry.list_package()
     for pkg in package_list:
         print(pkg)
@@ -60,6 +112,18 @@ def handle_list() -> None:
 
 
 def handle_uninstall(package_name: str) -> None:
+    """
+    Uninstall a package.
+
+    Args:
+        package_name (str): Name of the package to uninstall.
+
+    Behavior:
+        - Removes the package's binaries and folders using uninstall module.
+        - Updates global metadata.
+        - Prints success or failure messages.
+    """
+
     result_obj_uninstall: result.UninstallResult = uninstall.uninstall_package(
         str(package_name).lower()
     )
@@ -71,6 +135,24 @@ def handle_uninstall(package_name: str) -> None:
 
 
 def handle_upgrade(package_name: str) -> None:
+    """
+    Upgrade a package to the latest version.
+
+    Args:
+        package_name (str): Name of the package to upgrade.
+
+    Behavior:
+        - Checks if the package is installed.
+        - Calls handle_install to download and install the latest version.
+        - Prints a message if the package does not exist.
+
+    Returns:
+        None
+
+    Raises:
+        None
+    """
+
     package_installed = registry.get_package(package_name)
     if package_installed:
         handle_install(package_name)
@@ -79,6 +161,24 @@ def handle_upgrade(package_name: str) -> None:
 
 
 def handle_info(package_name: str) -> None:
+    """
+    Display metadata for a specific package.
+
+    Args:
+        package_name (str): Name of the package.
+
+    Behavior:
+        - Retrieves metadata from global registry.
+        - Prints key-value pairs.
+        - Prints a message if the package does not exist.
+
+    Returns:
+        None
+
+    Raises:
+        None
+    """
+
     package_info = registry.get_package_metadata(package_name)
     # print(package_info)
     if not package_info:
@@ -89,6 +189,23 @@ def handle_info(package_name: str) -> None:
 
 
 def main():
+    """
+    Entry point for the ayushman CLI.
+
+    Behavior:
+        - Parses command-line arguments using argparse.
+        - Dispatches to corresponding handle_* functions.
+        - Adds ayushman bin directory to PATH on first install.
+
+    Args:
+        None
+
+    Returns:
+        None
+
+    Raises:
+        None
+    """
     parser: argparse.ArgumentParser = argparse.ArgumentParser(
         description="A simple package manager called 'ayushman' to install executables from github.com/journeycodesayush repos"
     )
