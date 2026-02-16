@@ -35,7 +35,7 @@ versioned, and upgrade-safe.
 ## Installation
 
 > [!NOTE]
-> Currently, `ayushman` runs as a Python module (`python -m src`).
+> Currently, `ayushman` runs as a Python module (`python -m ayushman.__main__`).
 > No standalone executable is provided yet.
 
 To install and run `ayushman` locally:
@@ -72,16 +72,16 @@ To install and run `ayushman` locally:
 See all available commands using `-h` or `--help` flags:
 
 ```bash
-python -m src -h
+python -m ayushman.__main__ -h
 ```
 
 Commands
 
 ```bash
-python -m src install pdf-toolkit
-python -m src list
-python -m src upgrade pdf-toolkit
-python -m src uninstall pdf-toolkit
+python -m ayushman.__main__ install pdf-toolkit
+python -m ayushman.__main__ list
+python -m ayushman.__main__ upgrade pdf-toolkit
+python -m ayushman.__main__ uninstall pdf-toolkit
 ```
 
 ---
@@ -134,13 +134,13 @@ Executables are exposed via `~/.ayushman/bin`.
 
 ## Commands
 
-All commands are run using `python -m src`:
+All commands are run using `python -m ayushman.__main__`:
 
 ```bash
-python -m src install pdf-toolkit
-python -m src list
-python -m src upgrade pdf-toolkit
-python -m src uninstall pdf-toolkit
+python -m ayushman.__main__ install pdf-toolkit
+python -m ayushman.__main__ list
+python -m ayushman.__main__ upgrade pdf-toolkit
+python -m ayushman.__main__ uninstall pdf-toolkit
 ```
 
 All operations are safe to re-run and designed to be idempotent.
