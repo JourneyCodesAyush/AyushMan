@@ -13,28 +13,8 @@ do not require administrator privileges.
 import ctypes
 import os
 import winreg
-from pathlib import Path
 
-
-def get_local_app_data():
-    """
-    Retrieve the LOCALAPPDATA directory as a Path object.
-
-    Returns:
-        Path: The path to the user's LOCALAPPDATA directory.
-
-    Raises:
-        ValueError: If the LOCALAPPDATA environment variable is not set.
-    """
-
-    value = os.getenv("LOCALAPPDATA")
-    if not value:
-        raise ValueError("LOCALAPPDATA is not set")
-    return Path(value)
-
-
-AYUSHMAN_DIR = get_local_app_data() / ".ayushman"
-BIN_DIR = AYUSHMAN_DIR / "bin"
+from . import global_paths
 
 
 def get_user_path():
@@ -93,7 +73,7 @@ def add_to_path():
         - Uses ctypes to send WM_SETTINGCHANGE after updating the registry.
     """
 
-    bin_path = str(BIN_DIR)
+    bin_path = str(global_paths.BIN_DIR)
 
     path_value = get_user_path()
     paths = path_value.split(";")
