@@ -1,5 +1,8 @@
 # AyushMan
 
+![Python Version](https://img.shields.io/badge/python-3.11+-blue)
+![License](https://img.shields.io/badge/license-MIT-green)
+
 **AyushMan** is a minimal, Windows-only binary installer for ZIP-based GitHub releases from [author](https://github.com/JourneyCodesAyush)’s repositories.
 
 > Installs prebuilt, versioned Windows binaries from the [author](https://github.com/JourneyCodesAyush)’s GitHub releases, safely and with minimal fuss.
@@ -9,6 +12,27 @@ versioned, and upgrade-safe.
 
 > [!WARNING]
 > `AyushMan` is **NOT** a general-purpose package manager.
+
+---
+
+## Quick Start
+
+```powershell
+git clone https://github.com/JourneyCodesAyush/ayushman.git
+cd ayushman
+
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+# For CMD, use: .venv\Scripts\activate.bat
+
+pip install -r requirements.txt
+
+# Install a package
+python -m ayushman.__main__ install pdf-toolkit
+pdf-toolkit --help
+```
+
+> Works on Windows 10+ (x86_64). All installed executables live in `~/.ayushman/bin`.
 
 ---
 
@@ -25,7 +49,7 @@ versioned, and upgrade-safe.
 
 ---
 
-## Supported platform
+## Supported platforms
 
 - Windows 10 / 11 (x86_64)
 - Windows-only by design
@@ -50,13 +74,13 @@ To install and run `ayushman` locally:
 2. (Recommended) Create and activate a virtual environment:
 
    ```ps1
-   python -m venv venv
+   python -m venv .venv
 
    # On Windows CMD:
-   venv\Scripts\activate.bat
+   .venv\Scripts\activate.bat
 
    # On Windows PowerShell:
-   .\venv\Scripts\Activate.ps1
+   .\.venv\Scripts\Activate.ps1
    ```
 
 3. Install dependencies:
@@ -67,13 +91,40 @@ To install and run `ayushman` locally:
 
 ---
 
+## Development / Editable Install
+
+To install `ayushman` as a local command for development:
+
+```powershell
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1  # PowerShell
+
+pip install -e .
+
+ayushman list
+```
+
+Notes:
+
+- Editable mode (`-e`) makes your source code changes immediately available without reinstalling.
+- Make sure the virtual environment is activated; otherwise, `ayushman` won’t be on PATH.
+- After the first install, `~/.ayushman/bin` is automatically added to the **user PATH** so all installed binaries work in new terminals.
+
+---
+
 ## Usage
 
 See all available commands using `-h` or `--help` flags:
 
-```bash
-python -m ayushman.__main__ -h
-```
+> [!NOTE]
+> Either use `python -m ayushman.__main__` or use `ayushman` as mentioned in the previous section
+
+<p align="center">
+  <img src="assets/list-example.png" alt="AyushMan list output" width="800"/>
+  <br>
+</p>
+
+Example output of `ayushman list`
 
 Commands
 
@@ -114,6 +165,12 @@ All ayushman data is stored in `~/.ayushman/`.
 ## PATH handling
 
 Executables are exposed via `~/.ayushman/bin`.
+
+```powershell
+# Verify that ~/.ayushman/bin is in your PATH
+echo $env:PATH
+# If not present, restart your terminal or re-login to see the updated PATH
+```
 
 > [!NOTE]
 > `~/.ayushman/bin` is automatically added to the **user PATH** on first run.
@@ -164,6 +221,9 @@ AyushMan is designed for installing **trusted prebuilt Windows binaries** - not 
 ---
 
 ## Philosophy
+
+AyushMan focuses on **safe, versioned, prebuilt Windows binaries**.
+No builds, no scripts, no cross-platform headaches — just install, run, and upgrade.
 
 For a deeper explanation of why `AyushMan` works this way, its design principles, and the [author](https://github.com/JourneyCodesAyush)’s philosophy on package management, see [PHILOSOPHY.md](PHILOSOPHY.md).
 
