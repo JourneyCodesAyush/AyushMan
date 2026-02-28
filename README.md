@@ -131,8 +131,29 @@ Commands
 ```bash
 python -m ayushman.__main__ install pdf-toolkit
 python -m ayushman.__main__ list
+python -m ayushman.__main__ available
 python -m ayushman.__main__ upgrade pdf-toolkit
 python -m ayushman.__main__ uninstall pdf-toolkit
+```
+
+> [!TIP]
+> Use `available` to see all packages currently supported by AyushMan.
+
+## Available Packages
+
+AyushMan provides a curated list of packages that can be installed directly.
+This avoids the need to browse GitHub manually.
+
+```bash
+python -m ayushman.__main__ available
+```
+
+```txt
+Available packages:
+
+  cpp-cloc       - Count lines of code for various languages
+  c-utils        - Linux utility commands rewritten for educational purposes
+  pdf-toolkit    - PDF manipulation utilities
 ```
 
 ---
