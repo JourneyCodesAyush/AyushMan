@@ -14,6 +14,8 @@ Currently supported packages:
 This list may be extended as new packages are added.
 """
 
+from . import registry_supported
+
 
 def validate(package: str) -> bool:
     """
@@ -31,7 +33,7 @@ def validate(package: str) -> bool:
         This list may be extended in the future as new packages are added.
     """
 
-    PACKAGES: list[str] = ["cpp-cloc", "c-utils", "pdf-toolkit"]
-    if package in PACKAGES:
+    # PACKAGES: list[str] = ["cpp-cloc", "c-utils", "pdf-toolkit"]
+    if package in registry_supported.SUPPORTED_PACKAGES:
         return True
     return False
