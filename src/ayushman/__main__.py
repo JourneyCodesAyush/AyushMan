@@ -24,6 +24,7 @@ from . import (
     add_path,
     extract_zip,
     registry,
+    registry_supported,
     request_url,
     result,
     uninstall,
@@ -109,6 +110,14 @@ def handle_list() -> None:
     for pkg in package_list:
         print(pkg)
     print(f"{len(package_list)} packages installed.")
+
+
+def handle_available() -> None:
+    packages = registry_supported.SUPPORTED_PACKAGES
+    print("\nAvailable packages:\n")
+    max_len = max(len(name) for name in packages)
+    for name, data in packages.items():
+        print(f"  {name:<{max_len}}  -  {data['description']}")
 
 
 def handle_uninstall(package_name: str) -> None:
@@ -216,6 +225,10 @@ def main():
 
     list_parser = subparsers.add_parser("list", help="List all the installed packages")
 
+    available_parser = subparsers.add_parser(
+        "available", help="List all the available packages that can be installed"
+    )
+
     uninstall_parser = subparsers.add_parser("uninstall", help="Uninstall a package")
     uninstall_parser.add_argument("pkg", help="Package to uninstall")
 
@@ -235,6 +248,8 @@ def main():
                 registry.set_bin_in_path(True)
         case "list":
             handle_list()
+        case "available":
+            handle_available()
         case "uninstall":
             handle_uninstall(args.pkg)
         case "upgrade":
