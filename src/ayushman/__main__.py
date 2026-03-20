@@ -162,7 +162,7 @@ def handle_upgrade(package_name: str) -> None:
         None
     """
 
-    package_installed = registry.get_package(package_name)
+    package_installed = registry.is_package_installed(package_name)
     if package_installed:
         handle_install(package_name)
     else:

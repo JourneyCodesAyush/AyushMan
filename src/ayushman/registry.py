@@ -21,7 +21,7 @@ __all__ = [
     "add_package",
     "list_package",
     "get_installed_version",
-    "get_package",
+    "is_package_installed",
     "get_package_metadata",
     "remove_package",
     "set_bin_in_path",
@@ -141,7 +141,7 @@ def get_installed_version(package_name: str) -> str:
     return ""
 
 
-def get_package(package_name: str) -> bool:
+def is_package_installed(package_name: str) -> bool:
     """
     Check whether a package is installed.
 
