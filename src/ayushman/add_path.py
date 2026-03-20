@@ -16,6 +16,8 @@ import winreg
 
 from . import global_paths
 
+__all__ = ["add_to_path"]
+
 
 def get_user_path():
     """

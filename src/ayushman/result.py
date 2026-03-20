@@ -15,6 +15,8 @@ These classes are used to consistently communicate operation results across
 the CLI and internal modules.
 """
 
+__all__ = ["InstallResult", "UninstallResult"]
+
 
 class InstallResult:
     """

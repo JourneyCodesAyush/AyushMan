@@ -15,6 +15,8 @@ import requests
 
 from . import result
 
+__all__ = ["download_zip"]
+
 
 def download_zip(package: str) -> result.InstallResult:
     """

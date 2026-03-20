@@ -16,6 +16,8 @@ This list may be extended as new packages are added.
 
 from . import registry_supported
 
+__all__ = ["validate"]
+
 
 def validate(package: str) -> bool:
     """

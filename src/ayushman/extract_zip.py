@@ -24,6 +24,8 @@ from pathlib import Path
 
 from . import global_paths, result
 
+__all__ = ["extract_zip_file"]
+
 
 def extract_zip_file(install_result: result.InstallResult):
     """

@@ -19,6 +19,8 @@ import shutil
 
 from . import global_paths, result
 
+__all__ = ["uninstall_package"]
+
 
 def uninstall_package(package_name: str):
     """

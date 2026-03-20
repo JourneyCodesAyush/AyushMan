@@ -12,6 +12,8 @@ repeated path computations across modules.
 import os
 from pathlib import Path
 
+__all__ = ["AYUSHMAN_DIR", "PACKAGE_DIR", "BIN_DIR", "GLOBAL_METADATA"]
+
 
 def _get_local_app_data() -> Path:
     """

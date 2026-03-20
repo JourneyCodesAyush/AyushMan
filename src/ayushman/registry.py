@@ -17,6 +17,17 @@ from . import global_paths, result
 
 REGISTRY_PATH = global_paths.GLOBAL_METADATA
 
+__all__ = [
+    "add_package",
+    "list_package",
+    "get_installed_version",
+    "get_package",
+    "get_package_metadata",
+    "remove_package",
+    "set_bin_in_path",
+    "get_bin_in_path",
+]
+
 
 def _ensure_metadata_file() -> None:
     """

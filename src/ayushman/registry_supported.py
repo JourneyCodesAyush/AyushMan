@@ -1,3 +1,5 @@
+__all__ = ["SUPPORTED_PACKAGES"]
+
 SUPPORTED_PACKAGES: dict[str, dict] = {
     "cpp-cloc": {
         "description": "Count lines of code for various languages",
