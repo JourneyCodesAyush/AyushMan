@@ -16,10 +16,10 @@ This list may be extended as new packages are added.
 
 from . import registry_supported
 
-__all__ = ["validate"]
+__all__ = ["validate_package"]
 
 
-def validate(package: str) -> bool:
+def validate_package(package: str) -> bool:
     """
     Check whether a given package is supported by ayushman.
 

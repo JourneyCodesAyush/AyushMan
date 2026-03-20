@@ -28,7 +28,7 @@ from . import (
     request_url,
     result,
     uninstall,
-    validation,
+    validator,
 )
 
 
@@ -51,7 +51,7 @@ def handle_install(package_name: str) -> None:
         None
     """
 
-    if not validation.validate(package_name):
+    if not validator.validate_package(package_name):
         print(f"{package_name} not found in github.com/journeycodesayush")
         return
 
