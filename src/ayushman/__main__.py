@@ -61,9 +61,11 @@ def handle_install(package_name: str) -> None:
     if not result_obj.success:
         print(f"Download failed: {result_obj.error_message}")
 
-    installed_version: str = registry.get_installed_version(str(package_name).lower())
+    installed_version: str | None = registry.get_installed_version(
+        str(package_name).lower()
+    )
 
-    if installed_version == result_obj.version:
+    if installed_version is not None and installed_version == result_obj.version:
         print(f"{package_name} is already up to date.")
         if Path(result_obj.zip_file_name).exists():
             os.remove(result_obj.zip_file_name)

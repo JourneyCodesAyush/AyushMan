@@ -123,7 +123,7 @@ def list_package() -> list[str]:
     return package_list
 
 
-def get_installed_version(package_name: str) -> str:
+def get_installed_version(package_name: str) -> str | None:
     """
     Get the currently installed version of a package.
 
@@ -138,7 +138,7 @@ def get_installed_version(package_name: str) -> str:
     for pkg in data["installed_packages"]:
         if pkg["name"] == package_name:
             return pkg["version"]
-    return ""
+    return None
 
 
 def is_package_installed(package_name: str) -> bool:
