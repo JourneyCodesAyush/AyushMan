@@ -84,6 +84,9 @@ def handle_install(package_name: str) -> None:
         print(
             f"Installed {result_obj.package_name} {result_obj.version} to {result_obj.install_path}"
         )
+        print(
+            f"Executable available as: {result_obj.package_name}.exe in ~/.ayushman/bin"
+        )
         registry.add_package(result_obj)
     else:
         print(f"Extraction failed: {result_obj.error_message}")

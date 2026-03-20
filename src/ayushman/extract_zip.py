@@ -74,7 +74,7 @@ def extract_zip_file(install_result: result.InstallResult):
                     continue
 
                 target_path = package_folder / filename
-                hardlink_path = bin_folder / filename
+                hardlink_path = bin_folder / f"{install_result.package_name}.exe"
                 with (
                     zip_ref.open(file_info) as source,
                     open(target_path, "wb") as target,
