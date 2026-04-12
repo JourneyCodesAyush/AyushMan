@@ -18,6 +18,7 @@ installations are upgrade-safe, paths are updated, and metadata is tracked.
 
 import argparse
 import os
+import sys
 from pathlib import Path
 
 from . import (
@@ -278,6 +279,11 @@ def main():
     Raises:
         None
     """
+
+    if sys.platform != "win32":
+        print("ayushman only supports Windows.")
+        sys.exit(1)
+
     parser: argparse.ArgumentParser = argparse.ArgumentParser(
         description="A simple package manager called 'ayushman' to install executables from github.com/journeycodesayush repos"
     )
