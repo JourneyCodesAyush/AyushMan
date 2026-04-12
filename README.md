@@ -27,8 +27,11 @@ python -m venv .venv
 
 pip install -r requirements.txt
 
+# Necessary to use ayushman as a standalone command
+pip install -e .
+
 # Install a package
-python -m ayushman.__main__ install pdf-toolkit
+ayushman install pdf-toolkit
 pdf-toolkit --help
 ```
 
@@ -117,7 +120,7 @@ Notes:
 See all available commands using `-h` or `--help` flags:
 
 > [!NOTE]
-> Either use `python -m ayushman.__main__` or use `ayushman` as mentioned in the previous section
+> Either use `ayushman` or use `python -m ayushman.__main__` as mentioned in the previous section
 
 <p align="center">
   <img src="assets/list-example.png" alt="AyushMan list output" width="800"/>
@@ -129,11 +132,11 @@ Example output of `ayushman list`
 Commands
 
 ```bash
-python -m ayushman.__main__ install pdf-toolkit
-python -m ayushman.__main__ list
-python -m ayushman.__main__ available
-python -m ayushman.__main__ upgrade pdf-toolkit
-python -m ayushman.__main__ uninstall pdf-toolkit
+ayushman install pdf-toolkit
+ayushman list
+ayushman available
+ayushman upgrade pdf-toolkit
+ayushman uninstall pdf-toolkit
 ```
 
 > [!TIP]
@@ -145,7 +148,7 @@ AyushMan provides a curated list of packages that can be installed directly.
 This avoids the need to browse GitHub manually.
 
 ```bash
-python -m ayushman.__main__ available
+ayushman available
 ```
 
 ```txt
@@ -212,13 +215,13 @@ echo $env:PATH
 
 ## Commands
 
-All commands are run using `python -m ayushman.__main__`:
+All commands are run using `ayushman`:
 
 ```bash
-python -m ayushman.__main__ install pdf-toolkit
-python -m ayushman.__main__ list
-python -m ayushman.__main__ upgrade pdf-toolkit
-python -m ayushman.__main__ uninstall pdf-toolkit
+ayushman install pdf-toolkit
+ayushman list
+ayushman upgrade pdf-toolkit
+ayushman uninstall pdf-toolkit
 ```
 
 All operations are safe to re-run and designed to be idempotent.
