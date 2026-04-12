@@ -22,6 +22,7 @@ from pathlib import Path
 
 from . import (
     add_path,
+    colors,
     extract_zip,
     registry,
     registry_supported,
@@ -52,44 +53,73 @@ def handle_install(package_name: str) -> None:
     """
 
     if not validator.validate_package(package_name):
-        print(f"{package_name} not found in github.com/journeycodesayush")
+        print(
+            colors.Color.BOLD
+            + colors.Color.RED
+            + f"{package_name} not found in github.com/journeycodesayush"
+            + colors.Color.RESET
+        )
         return
 
     result_obj: result.InstallResult = request_url.download_zip(
         str(package_name).lower()
     )
     if not result_obj.success:
-        print(f"Download failed: {result_obj.error_message}")
+        print(
+            colors.Color.RED
+            + colors.Color.BOLD
+            + f"Download failed: {result_obj.error_message}"
+            + colors.Color.RESET
+        )
 
     installed_version: str | None = registry.get_installed_version(
         str(package_name).lower()
     )
 
     if installed_version is not None and installed_version == result_obj.version:
-        print(f"{package_name} is already up to date.")
+        print(
+            colors.Color.YELLOW
+            + f"{package_name} is already up to date."
+            + colors.Color.RESET
+        )
         if Path(result_obj.zip_file_name).exists():
             os.remove(result_obj.zip_file_name)
             return
 
     if installed_version:
         print(
-            f"Upgrading {package_name} from {installed_version} → {result_obj.version}"
+            colors.Color.YELLOW
+            + f"Upgrading {package_name} from {installed_version} → {result_obj.version}"
+            + colors.Color.RESET
         )
     else:
-        print(f"Installing {package_name} {result_obj.version}")
+        print(
+            colors.Color.YELLOW
+            + f"Installing {package_name} {result_obj.version}"
+            + colors.Color.RESET
+        )
 
     result_obj = extract_zip.extract_zip_file(install_result=result_obj)
 
     if result_obj.success:
         print(
-            f"Installed {result_obj.package_name} {result_obj.version} to {result_obj.install_path}"
+            colors.Color.GREEN
+            + f"Installed {result_obj.package_name} {result_obj.version} to {result_obj.install_path}"
+            + colors.Color.RESET
         )
         print(
-            f"Executable available as: {result_obj.package_name}.exe in ~/.ayushman/bin"
+            colors.Color.GREEN
+            + f"Executable available as: {result_obj.package_name}.exe in ~/.ayushman/bin"
+            + colors.Color.RESET
         )
         registry.add_package(result_obj)
     else:
-        print(f"Extraction failed: {result_obj.error_message}")
+        print(
+            colors.Color.RED
+            + colors.Color.BOLD
+            + f"Extraction failed: {result_obj.error_message}"
+            + colors.Color.RESET
+        )
     if Path(result_obj.zip_file_name).exists():
         os.remove(result_obj.zip_file_name)
 
@@ -114,15 +144,24 @@ def handle_list() -> None:
     package_list: list[str] = registry.list_package()
     for pkg in package_list:
         print(pkg)
-    print(f"{len(package_list)} packages installed.")
+    print(
+        colors.Color.GREEN
+        + f"{len(package_list)} packages installed."
+        + colors.Color.RESET
+    )
 
 
 def handle_available() -> None:
     packages = registry_supported.SUPPORTED_PACKAGES
-    print("\nAvailable packages:\n")
+    print(colors.Color.YELLOW + "\nAvailable packages:\n" + colors.Color.RESET)
     max_len = max(len(name) for name in packages)
     for name, data in packages.items():
-        print(f"  {name:<{max_len}}  -  {data['description']}")
+        print(
+            colors.Color.GREEN
+            + f"  {name:<{max_len}}"
+            + colors.Color.RESET
+            + f"  -  {data['description']}"
+        )
 
 
 def handle_uninstall(package_name: str) -> None:
@@ -143,9 +182,18 @@ def handle_uninstall(package_name: str) -> None:
     )
     removed: bool = registry.remove_package(result_obj_uninstall.package_name)
     if removed:
-        print(f"Uninstalled {result_obj_uninstall.package_name}")
+        print(
+            colors.Color.GREEN
+            + f"Uninstalled {result_obj_uninstall.package_name}"
+            + colors.Color.RESET
+        )
     else:
-        print(f"{str(package_name).lower()} is not installed")
+        print(
+            colors.Color.RED
+            + colors.Color.BOLD
+            + f"{str(package_name).lower()} is not installed"
+            + colors.Color.RESET
+        )
 
 
 def handle_upgrade(package_name: str) -> None:
@@ -171,7 +219,12 @@ def handle_upgrade(package_name: str) -> None:
     if package_installed:
         handle_install(package_name)
     else:
-        print(f"{package_name} does not exist.")
+        print(
+            colors.Color.BOLD
+            + colors.Color.RED
+            + f"{package_name} does not exist."
+            + colors.Color.RESET
+        )
 
 
 def handle_info(package_name: str) -> None:
@@ -196,10 +249,15 @@ def handle_info(package_name: str) -> None:
     package_info = registry.get_package_metadata(package_name)
     # print(package_info)
     if not package_info:
-        print(f"No package named '{package_name}'")
+        print(
+            colors.Color.RED
+            + colors.Color.BOLD
+            + f"No package named '{package_name}'"
+            + colors.Color.RESET
+        )
         return
     for key, value in package_info.items():
-        print(f"{key}: {value}")
+        print(colors.Color.GREEN + f"{key}:" + colors.Color.RESET + f" {value}")
 
 
 def main():
