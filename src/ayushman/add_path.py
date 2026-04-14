@@ -61,6 +61,16 @@ def _normalize(p: str) -> str:
     return os.path.normcase(os.path.normpath(p))
 
 
+def _broadcast_change() -> None:
+    HWND_BROADCAST = 0xFFFF
+    WM_SETTINGCHANGE = 0x1A
+    SMTO_ABORTIFHUNG = 0x0002
+
+    ctypes.windll.user32.SendMessageTimeoutW(
+        HWND_BROADCAST, WM_SETTINGCHANGE, 0, "Environment", SMTO_ABORTIFHUNG, 5000, None
+    )
+
+
 def add_to_path():
     """
     Add ayushman's bin directory to the user's PATH if it is not already present.
@@ -93,10 +103,11 @@ def add_to_path():
     print("Added BIN to PATH (open a new terminal)")
 
     # After updating PATH in registry
-    HWND_BROADCAST = 0xFFFF
-    WM_SETTINGCHANGE = 0x1A
-    SMTO_ABORTIFHUNG = 0x0002
+    # HWND_BROADCAST = 0xFFFF
+    # WM_SETTINGCHANGE = 0x1A
+    # SMTO_ABORTIFHUNG = 0x0002
 
-    ctypes.windll.user32.SendMessageTimeoutW(
-        HWND_BROADCAST, WM_SETTINGCHANGE, 0, "Environment", SMTO_ABORTIFHUNG, 5000, None
-    )
+    # ctypes.windll.user32.SendMessageTimeoutW(
+    #     HWND_BROADCAST, WM_SETTINGCHANGE, 0, "Environment", SMTO_ABORTIFHUNG, 5000, None
+    # )
+    _broadcast_change()
