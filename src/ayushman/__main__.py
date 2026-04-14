@@ -22,9 +22,9 @@ import sys
 from pathlib import Path
 
 from . import (
-    add_path,
     colors,
     extract_zip,
+    path,
     registry,
     registry_supported,
     request_url,
@@ -313,7 +313,7 @@ def main():
         case "install":
             handle_install(args.pkg)
             if not registry.get_bin_in_path():
-                add_path.add_to_path()
+                path.add_to_path()
                 registry.set_bin_in_path(True)
         case "list":
             handle_list()
