@@ -19,7 +19,7 @@ from . import global_paths
 __all__ = ["add_to_path"]
 
 
-def get_user_path():
+def _get_user_path():
     """
     Get the current user's PATH environment variable from the Windows registry.
 
@@ -33,7 +33,7 @@ def get_user_path():
         return value
 
 
-def set_user_path(new_path: str):
+def _set_user_path(new_path: str):
     """
     Set the user's PATH environment variable in the Windows registry.
 
@@ -47,7 +47,7 @@ def set_user_path(new_path: str):
         winreg.SetValueEx(key, "PATH", 0, winreg.REG_EXPAND_SZ, new_path)
 
 
-def normalize(p: str) -> str:
+def _normalize(p: str) -> str:
     """
     Normalize a filesystem path for consistent comparison.
 
@@ -77,19 +77,19 @@ def add_to_path():
 
     bin_path = str(global_paths.BIN_DIR)
 
-    path_value = get_user_path()
+    path_value = _get_user_path()
     paths = path_value.split(";")
 
-    normalized = [normalize(p) for p in paths]
+    normalized = [_normalize(p) for p in paths]
 
-    if normalize(bin_path) in normalized:
+    if _normalize(bin_path) in normalized:
         print("BIN already in PATH")
         return
 
     paths.append(bin_path)
     new_path = ";".join(paths)
 
-    set_user_path(new_path)
+    _set_user_path(new_path)
     print("Added BIN to PATH (open a new terminal)")
 
     # After updating PATH in registry
