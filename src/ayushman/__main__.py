@@ -18,12 +18,14 @@ installations are upgrade-safe, paths are updated, and metadata is tracked.
 
 import argparse
 import os
+import shutil
 import sys
 from pathlib import Path
 
 from . import (
     colors,
     extract_zip,
+    global_paths,
     path,
     registry,
     registry_supported,
@@ -261,6 +263,80 @@ def handle_info(package_name: str) -> None:
         print(colors.Color.GREEN + f"{key}:" + colors.Color.RESET + f" {value}")
 
 
+def handle_purge(force: bool = False, dry_run: bool = False) -> None:
+    root = global_paths.AYUSHMAN_DIR
+    if not root.exists():
+        print(
+            colors.Color.YELLOW
+            + "Ayushman is already fully removed."
+            + colors.Color.RESET
+        )
+        return
+
+    # DRY RUN
+    if dry_run:
+        print(
+            colors.Color.YELLOW + "\n[DRY RUN] Purge simulation:\n" + colors.Color.RESET
+        )
+        print(
+            colors.Color.YELLOW
+            + f"Would remove PATH entry:\n  {global_paths.BIN_DIR}"
+            + colors.Color.RESET
+        )
+        print(
+            colors.Color.YELLOW
+            + f"\nWould delete directory:\n  {root}"
+            + colors.Color.RESET
+        )
+        print(colors.Color.YELLOW + "\nWould remove:" + colors.Color.RESET)
+        print("  - all installed packages")
+        print("  - all metadata")
+        print("  - all binaries")
+        print(colors.Color.GREEN + "\nNo changes were made." + colors.Color.RESET)
+        return
+
+    if not force:
+        print(colors.Color.RED + colors.Color.BOLD + f"""
+This will remove ALL ayushman data:
+
+  {root}
+
+This action CANNOT be undone.
+""" + colors.Color.RESET)
+        confirm = input("Type 'DELETE' to continue: ").strip()
+        if confirm != "DELETE":
+            print(colors.Color.YELLOW + "Aborted." + colors.Color.RESET)
+            return
+
+    try:
+        path.remove_from_path()
+    except Exception as e:
+        print(
+            colors.Color.YELLOW
+            + f"Warning: failed to update PATH: {e}"
+            + colors.Color.RESET
+        )
+
+    try:
+        shutil.rmtree(root)
+        print(
+            colors.Color.GREEN + "Ayushman has been fully removed." + colors.Color.RESET
+        )
+    except PermissionError as e:
+        print(
+            colors.Color.RED
+            + colors.Color.BOLD
+            + f"Permission denied: {e}"
+            + colors.Color.RESET
+        )
+    except Exception as e:
+        print(
+            colors.Color.RED
+            + f"\nError: failed to delete some files. {e}\nYou may need to remove them manually."
+            + colors.Color.RESET
+        )
+
+
 def main():
     """
     Entry point for the ayushman CLI.
@@ -307,6 +383,21 @@ def main():
     info_parser = subparsers.add_parser("info", help="Get info of a package")
     info_parser.add_argument("pkg", help="Package to get info of")
 
+    purge_parser = subparsers.add_parser(
+        "purge",
+        help="Remove all ayushman data and configuration",
+    )
+    purge_parser.add_argument(
+        "--force",
+        action="store_true",
+        help="Skip confirmation prompt",
+    )
+    purge_parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="Simulate purge without making changes",
+    )
+
     args = parser.parse_args()
 
     match args.command:
@@ -325,6 +416,8 @@ def main():
             handle_upgrade(args.pkg)
         case "info":
             handle_info(args.pkg)
+        case "purge":
+            handle_purge(force=args.force, dry_run=args.dry_run)
         case _:
             print("Invalid arguments")
 
