@@ -46,7 +46,7 @@ pdf-toolkit --help
 - Extracts **only `.exe` files**
 - Uses **hard links** for upgrade-safe installs
 - Keeps packages versioned and isolated
-- Supports `install`, `list`, `upgrade`, and `uninstall` commands
+- Supports `install`, `list`, `upgrade`, `uninstall`, `info`, and `purge` commands
 - Minimal global state with JSON metadata
 - No build steps, scripts, or installers
 
@@ -60,10 +60,6 @@ pdf-toolkit --help
 ---
 
 ## Installation
-
-> [!NOTE]
-> Currently, `ayushman` runs as a Python module (`python -m ayushman.__main__`).
-> No standalone executable is provided yet.
 
 To install and run `ayushman` locally:
 
@@ -119,9 +115,6 @@ Notes:
 
 See all available commands using `-h` or `--help` flags:
 
-> [!NOTE]
-> Either use `ayushman` or use `python -m ayushman.__main__` as mentioned in the previous section
-
 <p align="center">
   <img src="assets/list-example.png" alt="AyushMan list output" width="800"/>
   <br>
@@ -164,9 +157,6 @@ Available packages:
 ## Installation directory layout
 
 All ayushman data is stored in `~/.ayushman/`.
-
-> The `ayushman` executable itself can live anywhere.
-> No executable is provided so far for `AyushMan` itself
 
 ```text
 ~/.ayushman/
@@ -222,6 +212,17 @@ ayushman install pdf-toolkit
 ayushman list
 ayushman upgrade pdf-toolkit
 ayushman uninstall pdf-toolkit
+```
+
+> [!WARNING]
+> Danger zone ahead
+
+> Remove 'AyushMan' from your system
+
+```bash
+ayushman purge
+ayushman purge --dry-run # simulate without making changes
+ayushman purge --force # skip confirmation prompt
 ```
 
 All operations are safe to re-run and designed to be idempotent.
