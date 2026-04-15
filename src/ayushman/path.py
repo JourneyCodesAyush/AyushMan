@@ -16,7 +16,7 @@ import winreg
 
 from . import global_paths
 
-__all__ = ["add_to_path"]
+__all__ = ["add_to_path", "remove_from_path"]
 
 
 def _get_user_path():
@@ -103,11 +103,39 @@ def add_to_path():
     print("Added BIN to PATH (open a new terminal)")
 
     # After updating PATH in registry
-    # HWND_BROADCAST = 0xFFFF
-    # WM_SETTINGCHANGE = 0x1A
-    # SMTO_ABORTIFHUNG = 0x0002
 
-    # ctypes.windll.user32.SendMessageTimeoutW(
-    #     HWND_BROADCAST, WM_SETTINGCHANGE, 0, "Environment", SMTO_ABORTIFHUNG, 5000, None
-    # )
+    _broadcast_change()
+
+
+def remove_from_path():
+    """
+    Remove ayushman's bin directory from the user's PATH if present.
+
+    Side effects:
+        - Updates the Windows registry for the current user's PATH.
+        - Broadcasts a system message to notify open applications of the change.
+        - Prints messages indicating whether the path was removed or not found.
+
+    Behavior:
+        - Normalizes paths for case-insensitive comparison.
+        - No-ops if the bin directory is not in PATH.
+    """
+
+    bin_path = str(global_paths.BIN_DIR)
+    norm_bin = _normalize(bin_path)
+
+    path_value = _get_user_path()
+    paths = [p for p in path_value.split(";") if p]
+
+    if norm_bin not in [_normalize(p) for p in paths]:
+        print("BIN not in PATH")
+        return
+
+    new_paths = [p for p in paths if _normalize(p) != norm_bin]
+    new_path = ";".join(new_paths)
+
+    _set_user_path(new_path)
+    print("Removed BIN from PATH (open a new terminal)")
+
+    # After updating PATH in registry
     _broadcast_change()
