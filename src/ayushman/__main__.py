@@ -75,6 +75,19 @@ def handle_install(package_name: str) -> None:
             + colors.Color.RESET
         )
 
+    if result_obj.remote_sha256 is None:
+        print(
+            colors.Color.YELLOW
+            + "No remote hash available, skipping verification."
+            + colors.Color.RESET
+        )
+    elif result_obj.hash_verified:
+        print(colors.Color.GREEN + "Hashes match." + colors.Color.RESET)
+    else:
+        if Path(result_obj.zip_file_name).exists():
+            os.remove(result_obj.zip_file_name)
+        return
+
     installed_version: str | None = registry.get_installed_version(
         str(package_name).lower()
     )

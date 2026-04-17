@@ -11,9 +11,11 @@ are reported via the InstallResult.error_message field, and the InstallResult
 object is always returned to capture success/failure and relevant data.
 """
 
+from pathlib import Path
+
 import requests
 
-from . import result
+from . import result, utils
 
 __all__ = ["download_zip"]
 
@@ -60,6 +62,9 @@ def download_zip(package: str) -> result.InstallResult:
             error_message=str(e),
             metadata={},
             metadata_path="",
+            local_sha256="",
+            remote_sha256=None,
+            hash_verified=False,
         )
 
     data = response.json()
@@ -77,8 +82,13 @@ def download_zip(package: str) -> result.InstallResult:
             error_message="No zip asset found in latest release",
             metadata=data,
             metadata_path="",
+            local_sha256="",
+            remote_sha256=None,
+            hash_verified=False,
         )
 
+    remote_digest = zip_asset.get("digest", None)
+    remote_sha256 = remote_digest.split(":")[1] if remote_digest else None
     zip_url = zip_asset.get("browser_download_url")
     local_zip_file_name = zip_asset.get("name")
     version = data.get("tag_name", "")
@@ -100,6 +110,9 @@ def download_zip(package: str) -> result.InstallResult:
             error_message=f"Failed to download ZIP: {e}",
             metadata=data,
             metadata_path="",
+            local_sha256="",
+            remote_sha256=None,
+            hash_verified=False,
         )
 
     package_metadata = {
@@ -107,6 +120,10 @@ def download_zip(package: str) -> result.InstallResult:
         "license": "MIT",
         "published_at": data.get("published_at", ""),
     }
+
+    calculated_local_sha256 = utils.get_sha256(
+        str(Path(local_zip_file_name).absolute().resolve())
+    )
 
     # Success! Return a fully populated InstallResult
     return result.InstallResult(
@@ -118,6 +135,9 @@ def download_zip(package: str) -> result.InstallResult:
         error_message=None,
         metadata=package_metadata,
         metadata_path="",  # Will be filled after extraction
+        local_sha256=calculated_local_sha256,
+        remote_sha256=remote_sha256,
+        hash_verified=(remote_sha256 == calculated_local_sha256),
     )
 
 
