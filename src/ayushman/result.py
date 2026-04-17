@@ -30,6 +30,9 @@ class InstallResult:
         success (bool): Whether the installation succeeded.
         error_message (str | None): Error message if installation failed.
         metadata (dict): Per-package metadata (author, license, etc.).
+        local_sha256 (str): Locally calculated sha256 of the downloaded zip file.
+        remote_sha256 (str | None): sha256 as received in response from Github.
+        hash_verified (bool): Whether sha256 calculated locally and received from Github match or not.
         metadata_path (str): Path to the per-package metadata JSON file.
     """
 
@@ -43,10 +46,16 @@ class InstallResult:
         error_message: str | None,
         metadata: dict,
         metadata_path: str,
+        local_sha256: str = "",
+        remote_sha256: str | None = None,
+        hash_verified: bool = False,
     ) -> None:
         self.package_name = package_name
         self.version = version
         self.zip_file_name = zip_file_name
+        self.local_sha256 = local_sha256 or None
+        self.remote_sha256 = remote_sha256 or None
+        self.hash_verified = hash_verified or False
         self.install_path = install_path
         self.success = success
         self.error_message = error_message
