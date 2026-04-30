@@ -35,7 +35,7 @@ ayushman install pdf-toolkit
 pdf-toolkit --help
 ```
 
-> Works on Windows 10+ (x86_64). All installed executables live in `~/.ayushman/bin`.
+> Works on Windows 10+ (x86_64). All installed executables live in `%LOCALAPPDATA%\.ayushman\bin`.
 
 ---
 
@@ -107,7 +107,7 @@ Notes:
 
 - Editable mode (`-e`) makes your source code changes immediately available without reinstalling.
 - Make sure the virtual environment is activated; otherwise, `ayushman` won’t be on PATH.
-- After the first install, `~/.ayushman/bin` is automatically added to the **user PATH** so all installed binaries work in new terminals.
+- After the first install, `%LOCALAPPDATA%\.ayushman\bin` is automatically added to the **user PATH** so all installed binaries work in new terminals.
 
 ---
 
@@ -156,10 +156,10 @@ Available packages:
 
 ## Installation directory layout
 
-All ayushman data is stored in `~/.ayushman/`.
+All ayushman data is stored in `%LOCALAPPDATA%\.ayushman\`.
 
 ```text
-~/.ayushman/
+%LOCALAPPDATA%\.ayushman\
 ├── bin/
 │   └── <pkg>.exe               # hard-linked executable
 ├── packages/
@@ -178,18 +178,22 @@ All ayushman data is stored in `~/.ayushman/`.
 
 ## PATH handling
 
-Executables are exposed via `~/.ayushman/bin`.
+Executables are exposed via `%LOCALAPPDATA%\.ayushman\bin`.
 
 ```powershell
-# Verify that ~/.ayushman/bin is in your PATH
+# Verify that %LOCALAPPDATA%\.ayushman\bin is in your PATH
 echo $env:PATH
 # If not present, restart your terminal or re-login to see the updated PATH
 ```
 
+AyushMan attempts to add: `%LOCALAPPDATA%\.ayushman\bin` to the user PATH on first run.
+
+If the change does not take effect immediately, restart your terminal or re-login.
+
+> This allows installed executables to be used globally from any terminal session.
+
 > [!NOTE]
-> `~/.ayushman/bin` is automatically added to the **user PATH** on first run.
-> This makes installed executables immediately available in new terminal sessions,
-> without modifying system-level PATH variables.
+> If automatic PATH injection fails, manually add %LOCALAPPDATA%\.ayushman\bin to User Environment Variables.
 
 ---
 
@@ -197,7 +201,7 @@ echo $env:PATH
 
 - Packages are downloaded **only** from this [author](https://github.com/JourneyCodesAyush)’s repositories
 - The **latest release** is selected automatically
-- ZIP assets must contain **binaries only**
+- ZIP assets must contain **binaries**
 - No scripts, installers, or post-install hooks are executed
 - Packages are expected to ship ready-to-run executables
 
@@ -228,7 +232,7 @@ ayushman purge --force # skip confirmation prompt
 All operations are safe to re-run and designed to be idempotent.
 
 > [!TIP]
-> After adding `~/.ayushman/bin` to PATH, all installed executables behave like any other CLI tool.
+> After adding `%LOCALAPPDATA%\.ayushman\bin` to PATH, all installed executables behave like any other CLI tool.
 
 ---
 
@@ -248,7 +252,7 @@ AyushMan is designed for installing **trusted prebuilt Windows binaries** - not 
 ## Philosophy
 
 AyushMan focuses on **safe, versioned, prebuilt Windows binaries**.
-No builds, no scripts, no cross-platform headaches — just install, run, and upgrade.
+No builds, no installers, no cross-platform abstraction — just install, run, and upgrade.
 
 For a deeper explanation of why `AyushMan` works this way, its design principles, and the [author](https://github.com/JourneyCodesAyush)’s philosophy on package management, see [PHILOSOPHY.md](PHILOSOPHY.md).
 
