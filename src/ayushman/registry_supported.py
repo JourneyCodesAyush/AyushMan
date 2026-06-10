@@ -13,6 +13,9 @@ SUPPORTED_PACKAGES: dict[str, dict] = {
     "cpp-cloc": {
         "description": "Count lines of code for various languages",
     },
+    "mklicense": {
+         "description": "Generate license files for your projects from the command line",
+    },
     "pdf-toolkit": {
         "description": "PDF manipulation utilities",
     },
