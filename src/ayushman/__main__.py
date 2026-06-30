@@ -436,4 +436,9 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except KeyboardInterrupt:
+        print("\nAborted.")
+    except Exception as e:
+        print(f"{Color.RED}Error: {e}{Color.RESET}")
