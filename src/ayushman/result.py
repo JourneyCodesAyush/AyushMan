@@ -81,8 +81,8 @@ class UninstallResult:
         package_name: str,
         versions: list[str],
         success: bool,
-        removed_bins: list[str] = [],
-        removed_packages: list[str] = [],
+        removed_bins: list[str] | None = None,
+        removed_packages: list[str] | None = None,
         error_message: str = "",
     ):
         self.package_name = package_name
