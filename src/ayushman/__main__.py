@@ -368,77 +368,78 @@ def main():
     Raises:
         None
     """
-
-    if sys.platform != "win32":
-        print("ayushman only supports Windows.")
-        sys.exit(1)
-
-    parser: argparse.ArgumentParser = argparse.ArgumentParser(
-        description="A simple package manager called 'ayushman' to install executables from github.com/journeycodesayush repos"
-    )
-
-    subparsers = parser.add_subparsers(dest="command", required=True)
-    install_parser = subparsers.add_parser("install", help="Install a package")
-    install_parser.add_argument("pkg", help="Package to install")
-
-    subparsers.add_parser("list", help="List all the installed packages")
-
-    subparsers.add_parser(
-        "available", help="List all the available packages that can be installed"
-    )
-
-    uninstall_parser = subparsers.add_parser("uninstall", help="Uninstall a package")
-    uninstall_parser.add_argument("pkg", help="Package to uninstall")
-
-    upgrade_parser = subparsers.add_parser("upgrade", help="Upgrade a package")
-    upgrade_parser.add_argument("pkg", help="Package to upgrade")
-
-    info_parser = subparsers.add_parser("info", help="Get info of a package")
-    info_parser.add_argument("pkg", help="Package to get info of")
-
-    purge_parser = subparsers.add_parser(
-        "purge",
-        help="Remove all ayushman data and configuration",
-    )
-    purge_parser.add_argument(
-        "--force",
-        action="store_true",
-        help="Skip confirmation prompt",
-    )
-    purge_parser.add_argument(
-        "--dry-run",
-        action="store_true",
-        help="Simulate purge without making changes",
-    )
-
-    args = parser.parse_args()
-
-    match args.command:
-        case "install":
-            handle_install(args.pkg)
-            if not registry.get_bin_in_path():
-                path.add_to_path()
-                registry.set_bin_in_path(True)
-        case "list":
-            handle_list()
-        case "available":
-            handle_available()
-        case "uninstall":
-            handle_uninstall(args.pkg)
-        case "upgrade":
-            handle_upgrade(args.pkg)
-        case "info":
-            handle_info(args.pkg)
-        case "purge":
-            handle_purge(force=args.force, dry_run=args.dry_run)
-        case _:
-            print("Invalid arguments")
-
-
-if __name__ == "__main__":
     try:
-        main()
+        if sys.platform != "win32":
+            print("ayushman only supports Windows.")
+            sys.exit(1)
+
+        parser: argparse.ArgumentParser = argparse.ArgumentParser(
+            description="A simple package manager called 'ayushman' to install executables from github.com/journeycodesayush repos"
+        )
+
+        subparsers = parser.add_subparsers(dest="command", required=True)
+        install_parser = subparsers.add_parser("install", help="Install a package")
+        install_parser.add_argument("pkg", help="Package to install")
+
+        subparsers.add_parser("list", help="List all the installed packages")
+
+        subparsers.add_parser(
+            "available", help="List all the available packages that can be installed"
+        )
+
+        uninstall_parser = subparsers.add_parser(
+            "uninstall", help="Uninstall a package"
+        )
+        uninstall_parser.add_argument("pkg", help="Package to uninstall")
+
+        upgrade_parser = subparsers.add_parser("upgrade", help="Upgrade a package")
+        upgrade_parser.add_argument("pkg", help="Package to upgrade")
+
+        info_parser = subparsers.add_parser("info", help="Get info of a package")
+        info_parser.add_argument("pkg", help="Package to get info of")
+
+        purge_parser = subparsers.add_parser(
+            "purge",
+            help="Remove all ayushman data and configuration",
+        )
+        purge_parser.add_argument(
+            "--force",
+            action="store_true",
+            help="Skip confirmation prompt",
+        )
+        purge_parser.add_argument(
+            "--dry-run",
+            action="store_true",
+            help="Simulate purge without making changes",
+        )
+
+        args = parser.parse_args()
+
+        match args.command:
+            case "install":
+                handle_install(args.pkg)
+                if not registry.get_bin_in_path():
+                    path.add_to_path()
+                    registry.set_bin_in_path(True)
+            case "list":
+                handle_list()
+            case "available":
+                handle_available()
+            case "uninstall":
+                handle_uninstall(args.pkg)
+            case "upgrade":
+                handle_upgrade(args.pkg)
+            case "info":
+                handle_info(args.pkg)
+            case "purge":
+                handle_purge(force=args.force, dry_run=args.dry_run)
+            case _:
+                print("Invalid arguments")
     except KeyboardInterrupt:
         print("\nAborted.")
     except Exception as e:
         print(f"{colors.Color.RED}Error: {e}{colors.Color.RESET}")
+
+
+if __name__ == "__main__":
+    main()
