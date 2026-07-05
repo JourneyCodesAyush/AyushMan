@@ -309,13 +309,14 @@ def handle_purge(force: bool = False, dry_run: bool = False) -> None:
         return
 
     if not force:
-        print(colors.Color.RED + colors.Color.BOLD + f"""
+        message: str = f"""
 This will remove ALL ayushman data:
 
   {root}
 
 This action CANNOT be undone.
-""" + colors.Color.RESET)
+"""
+        print(colors.Color.RED + colors.Color.BOLD + message + colors.Color.RESET)
         confirm = input("Type 'DELETE' to continue: ").strip()
         if confirm != "DELETE":
             print(colors.Color.YELLOW + "Aborted." + colors.Color.RESET)
