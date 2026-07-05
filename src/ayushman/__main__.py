@@ -381,9 +381,9 @@ def main():
     install_parser = subparsers.add_parser("install", help="Install a package")
     install_parser.add_argument("pkg", help="Package to install")
 
-    list_parser = subparsers.add_parser("list", help="List all the installed packages")
+    subparsers.add_parser("list", help="List all the installed packages")
 
-    available_parser = subparsers.add_parser(
+    subparsers.add_parser(
         "available", help="List all the available packages that can be installed"
     )
 
@@ -441,4 +441,4 @@ if __name__ == "__main__":
     except KeyboardInterrupt:
         print("\nAborted.")
     except Exception as e:
-        print(f"{Color.RED}Error: {e}{Color.RESET}")
+        print(f"{colors.Color.RED}Error: {e}{colors.Color.RESET}")
