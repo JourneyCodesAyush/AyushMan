@@ -14,10 +14,10 @@ SUPPORTED_PACKAGES: dict[str, dict] = {
         "description": "Count lines of code for various languages",
     },
     "passman": {
-            "description":"A local-first CLI password manager",
+        "description": "A local-first CLI password manager",
     },
     "mklicense": {
-         "description": "Generate license files for your projects from the command line",
+        "description": "Generate license files for your projects from the command line",
     },
     "pdf-toolkit": {
         "description": "PDF manipulation utilities",

@@ -54,7 +54,7 @@ def _read_metadata() -> dict:
     """
 
     _ensure_metadata_file()
-    with open(REGISTRY_PATH, "r") as f:
+    with open(REGISTRY_PATH) as f:
         return json.load(f)
 
 
