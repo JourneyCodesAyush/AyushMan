@@ -15,20 +15,29 @@ versioned, and upgrade-safe.
 
 ---
 
+## Requirements
+
+- Windows 10 / 11 (x86_64)
+- Python 3.11+
+- [uv](https://github.com/astral-sh/uv)
+
+---
+
 ## Quick Start
 
 ```powershell
 git clone https://github.com/JourneyCodesAyush/ayushman.git
 cd ayushman
 
-python -m venv .venv
+uv venv .venv --clear
+
 .\.venv\Scripts\Activate.ps1
 # For CMD, use: .venv\Scripts\activate.bat
 
-pip install -r requirements.txt
+uv sync
 
 # Necessary to use ayushman as a standalone command
-pip install -e .
+uv pip install -e . --link-mode=copy
 
 # Install a package
 ayushman install pdf-toolkit
@@ -73,7 +82,7 @@ To install and run `ayushman` locally:
 2. (Recommended) Create and activate a virtual environment:
 
    ```ps1
-   python -m venv .venv
+   uv venv .venv --clear
 
    # On Windows CMD:
    .venv\Scripts\activate.bat
@@ -85,7 +94,7 @@ To install and run `ayushman` locally:
 3. Install dependencies:
 
    ```bash
-   pip install -r requirements.txt
+   uv sync
    ```
 
 ---
@@ -95,10 +104,11 @@ To install and run `ayushman` locally:
 To install `ayushman` as a local command for development:
 
 ```powershell
-python -m venv .venv
+uv venv .venv --clear
 .\.venv\Scripts\Activate.ps1  # PowerShell
 
-pip install -e .
+uv sync
+uv pip install -e . --link-mode=copy
 
 ayushman list
 ```
