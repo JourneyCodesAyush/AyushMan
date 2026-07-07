@@ -2,6 +2,7 @@
 
 ![Python Version](https://img.shields.io/badge/python-3.11+-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
+![CI](https://github.com/JourneyCodesAyush/ayushman/actions/workflows/ci.yml/badge.svg)
 
 **AyushMan** is a minimal, Windows-only binary installer for ZIP-based GitHub releases from [author](https://github.com/JourneyCodesAyush)’s repositories.
 
