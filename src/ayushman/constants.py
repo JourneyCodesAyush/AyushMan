@@ -1,4 +1,10 @@
-__all__ = ["GITHUB_OWNER"]
+__all__ = [
+    "GITHUB_OWNER",
+    "INSTALL_DIR_NAME",
+    "PACKAGE_DIR_NAME",
+    "BIN_DIR_NAME",
+    "METADATA_FILE_NAME",
+]
 
 GITHUB_OWNER: str = "JourneyCodesAyush"
 
