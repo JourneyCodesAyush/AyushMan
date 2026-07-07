@@ -10,6 +10,11 @@
 It installs prebuilt executables directly from GitHub and keeps them isolated,
 versioned, and upgrade-safe.
 
+**AyushMan is designed to be fork-friendly.**
+Project-specific configuration such as the GitHub release owner and installation layout can be customized from `src/ayushman/constants.py`.
+
+See [Forking & Configuration](#forking--configuration) for details.
+
 > [!WARNING]
 > `AyushMan` is **NOT** a general-purpose package manager.
 
@@ -118,6 +123,23 @@ Notes:
 - Editable mode (`-e`) makes your source code changes immediately available without reinstalling.
 - Make sure the virtual environment is activated; otherwise, `ayushman` won’t be on PATH.
 - After the first install, `%LOCALAPPDATA%\.ayushman\bin` is automatically added to the **user PATH** so all installed binaries work in new terminals.
+
+---
+
+## Forking & Configuration
+
+AyushMan keeps project-specific configuration in
+`src/ayushman/constants.py`.
+
+Forks can customize:
+
+- `GITHUB_OWNER` - GitHub account or organization used to fetch releases
+- `INSTALL_DIR_NAME` - local application directory name
+- `PACKAGE_DIR_NAME` - package storage directory name
+- `BIN_DIR_NAME` - executable directory name
+- `METADATA_FILE_NAME` - metadata file name
+
+Changing these values allows a fork to use its own GitHub release repositories and installation layout without modifying AyushMan's core logic.
 
 ---
 
