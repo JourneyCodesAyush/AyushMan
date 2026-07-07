@@ -2,9 +2,9 @@
 Download helpers for ayushman.
 
 This module provides functions to fetch the latest release ZIP files for
-packages hosted on the JourneyCodesAyush GitHub repository. It handles
-network requests, error handling, and populates InstallResult objects
-with metadata, file paths, and download status.
+packages hosted on the GitHub owner configured in `ayushman.constants`.
+It handles network requests, error handling, and populates InstallResult
+objects with metadata, file paths, and download status.
 
 All downloads are saved to the current working directory. Any failures
 are reported via the InstallResult.error_message field, and the InstallResult
@@ -15,6 +15,7 @@ from pathlib import Path
 
 import requests
 
+import ayushman.constants as constants
 import ayushman.result as result
 import ayushman.utils as utils
 
@@ -30,7 +31,8 @@ def download_zip(package: str) -> result.InstallResult:
     and returns an InstallResult containing all relevant information.
 
     Args:
-        package (str): The name of the package to download from the JourneyCodesAyush GitHub repository.
+        package (str): The name of the package repository under the GitHub owner
+        configured in `ayushman.constants.GITHUB_OWNER`.
 
     Returns:
         InstallResult: An object containing package information, the local ZIP file name,
@@ -47,7 +49,7 @@ def download_zip(package: str) -> result.InstallResult:
         In these cases, `success` will be False and `error_message` populated.
     """
 
-    url = f"https://api.github.com/repos/JourneyCodesAyush/{package}/releases/latest"
+    url = f"https://api.github.com/repos/{constants.GITHUB_OWNER}/{package}/releases/latest"
 
     try:
         response = requests.get(url)
