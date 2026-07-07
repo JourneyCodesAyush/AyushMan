@@ -12,6 +12,8 @@ repeated path computations across modules.
 import os
 from pathlib import Path
 
+import ayushman.constants as constants
+
 __all__ = ["AYUSHMAN_DIR", "PACKAGE_DIR", "BIN_DIR", "GLOBAL_METADATA"]
 
 
@@ -37,13 +39,13 @@ def _get_local_app_data() -> Path:
 
 
 # Root directory for all ayushman data inside LOCALAPPDATA
-AYUSHMAN_DIR = _get_local_app_data() / ".ayushman"
+AYUSHMAN_DIR = _get_local_app_data() / f".{constants.INSTALL_DIR_NAME}"
 
 # Directory where all packages are installed
-PACKAGE_DIR = AYUSHMAN_DIR / "packages"
+PACKAGE_DIR = AYUSHMAN_DIR / constants.PACKAGE_DIR_NAME
 
 # Directory where hardlinked executables are placed
-BIN_DIR = AYUSHMAN_DIR / "bin"
+BIN_DIR = AYUSHMAN_DIR / constants.BIN_DIR_NAME
 
 # Path to the global metadata JSON file
-GLOBAL_METADATA = AYUSHMAN_DIR / "metadata.json"
+GLOBAL_METADATA = AYUSHMAN_DIR / f"{constants.METADATA_FILE_NAME}.json"
