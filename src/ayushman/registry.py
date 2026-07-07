@@ -13,7 +13,8 @@ in sync with the filesystem.
 
 import json
 
-from . import global_paths, result
+import ayushman.global_paths as global_paths
+import ayushman.result as result
 
 REGISTRY_PATH = global_paths.GLOBAL_METADATA
 

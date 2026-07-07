@@ -22,18 +22,16 @@ import shutil
 import sys
 from pathlib import Path
 
-from . import (
-    colors,
-    extract_zip,
-    global_paths,
-    path,
-    registry,
-    registry_supported,
-    request_url,
-    result,
-    uninstall,
-    validator,
-)
+import ayushman.colors as colors
+import ayushman.extract_zip as extract_zip
+import ayushman.global_paths as global_paths
+import ayushman.path as path
+import ayushman.registry as registry
+import ayushman.registry_supported as registry_supported
+import ayushman.request_url as request_url
+import ayushman.result as result
+import ayushman.uninstall as uninstall
+import ayushman.validator as validator
 
 
 def handle_install(package_name: str) -> None:

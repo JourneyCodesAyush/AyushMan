@@ -14,7 +14,7 @@ import ctypes
 import os
 import winreg
 
-from . import global_paths
+import ayushman.global_paths as global_paths
 
 __all__ = ["add_to_path", "remove_from_path"]
 

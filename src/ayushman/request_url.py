@@ -15,7 +15,8 @@ from pathlib import Path
 
 import requests
 
-from . import result, utils
+import ayushman.result as result
+import ayushman.utils as utils
 
 __all__ = ["download_zip"]
 

@@ -22,7 +22,8 @@ import os
 import zipfile
 from pathlib import Path
 
-from . import global_paths, result
+import ayushman.global_paths as global_paths
+import ayushman.result as result
 
 __all__ = ["extract_zip_file"]
 

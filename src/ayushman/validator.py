@@ -14,7 +14,7 @@ Currently supported packages:
 This list may be extended as new packages are added.
 """
 
-from . import registry_supported
+import ayushman.registry_supported as registry_supported
 
 __all__ = ["validate_package"]
 
