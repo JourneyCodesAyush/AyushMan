@@ -180,9 +180,13 @@ ayushman available
 ```txt
 Available packages:
 
-  cpp-cloc       - Count lines of code for various languages
-  c-utils        - Linux utility commands rewritten for educational purposes
-  pdf-toolkit    - PDF manipulation utilities
+  occ          -  The Optimistic Compiler Collection - because every program deserves to succeed
+  sweep        -  Recursively find and delete unwanted folders like node_modules
+  c-utils      -  Linux utilities commands rewritten for educational purposes
+  cpp-cloc     -  Count lines of code for various languages
+  passman      -  A local-first CLI password manager
+  mklicense    -  Generate license files for your projects from the command line
+  pdf-toolkit  -  PDF manipulation utilities
 ```
 
 ---
