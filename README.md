@@ -129,18 +129,43 @@ Notes:
 
 ## Forking & Configuration
 
-AyushMan keeps project-specific configuration in
-`src/ayushman/constants.py`.
+AyushMan is designed to be easy to fork.
 
-Forks can customize:
+Project-specific configuration is kept in `src/ayushman/constants.py`, allowing forks to customize where packages are downloaded from and how they are installed.
 
-- `GITHUB_OWNER` - GitHub account or organization used to fetch releases
-- `INSTALL_DIR_NAME` - local application directory name
-- `PACKAGE_DIR_NAME` - package storage directory name
-- `BIN_DIR_NAME` - executable directory name
-- `METADATA_FILE_NAME` - metadata file name
+Available configuration options include:
 
-Changing these values allows a fork to use its own GitHub release repositories and installation layout without modifying AyushMan's core logic.
+- `GITHUB_OWNER` – GitHub account or organization used to fetch releases
+- `INSTALL_DIR_NAME` – local application directory name
+- `PACKAGE_DIR_NAME` – package storage directory name
+- `BIN_DIR_NAME` – executable directory name
+- `METADATA_FILE_NAME` – metadata file name
+
+Forks can also customize the list of installable packages by editing:
+
+```text
+src/ayushman/registry_supported.py
+```
+
+The `SUPPORTED_PACKAGES` registry defines the packages shown by `ayushman available`.
+
+You can:
+
+- Add new packages
+- Remove packages you don't distribute
+- Update package descriptions
+
+Example:
+
+```python
+SUPPORTED_PACKAGES = {
+    "my-tool": {
+        "description": "A useful command-line utility",
+    },
+}
+```
+
+Changing both `constants.py` and `registry_supported.py` allows a fork to use its own GitHub release repositories, package catalog, and installation layout without modifying AyushMan's core logic.
 
 ---
 
@@ -172,6 +197,8 @@ ayushman uninstall pdf-toolkit
 
 AyushMan provides a curated list of packages that can be installed directly.
 This avoids the need to browse GitHub manually.
+
+For forks, this list is defined in `src/ayushman/registry_supported.py` and can be customized to match your own GitHub releases.
 
 ```bash
 ayushman available
