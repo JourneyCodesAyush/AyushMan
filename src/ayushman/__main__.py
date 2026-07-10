@@ -20,6 +20,7 @@ import argparse
 import os
 import shutil
 import sys
+from importlib.metadata import version
 from pathlib import Path
 
 import ayushman.colors as colors
@@ -375,7 +376,12 @@ def main():
         parser: argparse.ArgumentParser = argparse.ArgumentParser(
             description="A simple package manager called 'ayushman' to install executables from github.com/journeycodesayush repos"
         )
-
+        parser.add_argument(
+            "-v",
+            "--version",
+            action="version",
+            version=f"ayushman v{version('ayushman')}",
+        )
         subparsers = parser.add_subparsers(dest="command", required=True)
         install_parser = subparsers.add_parser("install", help="Install a package")
         install_parser.add_argument("pkg", help="Package to install")
