@@ -4,6 +4,7 @@ SUPPORTED_PACKAGES: dict[str, dict] = {
     "occ": {
         "description": "The Optimistic Compiler Collection - because every program deserves to succeed"
     },
+    "lsz": {"description": "ls in Zig"},
     "sweep": {
         "description": "Recursively find and delete unwanted folders like node_modules"
     },
