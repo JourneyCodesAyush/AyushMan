@@ -17,6 +17,9 @@ SUPPORTED_PACKAGES: dict[str, dict] = {
     "passman": {
         "description": "A local-first CLI password manager",
     },
+    "ayushman": {
+        "description": "The AyushMan package manager itself",
+    },
     "mklicense": {
         "description": "Generate license files for your projects from the command line",
     },
