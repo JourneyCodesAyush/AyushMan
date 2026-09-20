@@ -67,11 +67,8 @@ jobs:
           pyinstaller ayushman.spec
 
       - name: Zip executable
-        shell: bash
         run: |
-          cd dist
-          zip ayushman-windows-x86_64.zip ayushman.exe
-          mv ayushman-windows-x86_64.zip "$GITHUB_WORKSPACE/"
+          Compress-Archive -Path dist\ayushman.exe -DestinationPath ayushman-windows-x86_64.zip
 
       - name: Create GitHub release
         uses: softprops/action-gh-release@v2
