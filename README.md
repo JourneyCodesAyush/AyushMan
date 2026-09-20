@@ -4,9 +4,9 @@
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![CI](https://github.com/JourneyCodesAyush/ayushman/actions/workflows/ci.yml/badge.svg)
 
-**AyushMan** is a minimal, Windows-only binary installer for ZIP-based GitHub releases from [author](https://github.com/JourneyCodesAyush)’s repositories.
+**AyushMan** is a minimal, Windows-only binary installer for ZIP-based GitHub releases from [author](https://github.com/JourneyCodesAyush)'s repositories.
 
-> Installs prebuilt, versioned Windows binaries from the [author](https://github.com/JourneyCodesAyush)’s GitHub releases, safely and with minimal fuss.
+> Installs prebuilt, versioned Windows binaries from the [author](https://github.com/JourneyCodesAyush)'s GitHub releases, safely and with minimal fuss.
 
 It installs prebuilt executables directly from GitHub and keeps them isolated,
 versioned, and upgrade-safe.
@@ -24,33 +24,27 @@ See [Forking & Configuration](#forking--configuration) for details.
 ## Requirements
 
 - Windows 10 / 11 (x86_64)
-- Python 3.11+
-- [uv](https://github.com/astral-sh/uv)
 
 ---
 
 ## Quick Start
 
+1. Download `ayushman-windows-x86_64.zip` from the [latest release](https://github.com/JourneyCodesAyush/ayushman/releases/latest)
+2. Extract it anywhere — you'll get `ayushman.exe`
+3. Run:
+
 ```powershell
-git clone https://github.com/JourneyCodesAyush/ayushman.git
-cd ayushman
+.\ayushman.exe install ayushman
+```
 
-uv venv .venv --clear
+That's it. `ayushman` is now installed globally and manages itself from here on.
 
-.\.venv\Scripts\Activate.ps1
-# For CMD, use: .venv\Scripts\activate.bat
-
-uv sync
-
-# Necessary to use ayushman as a standalone command
-uv pip install -e . --link-mode=copy
-
-# Install a package
+```powershell
 ayushman install pdf-toolkit
 pdf-toolkit --help
 ```
 
-> Works on Windows 10+ (x86_64). All installed executables live in `%LOCALAPPDATA%\.ayushman\bin`.
+> All installed executables live in `%LOCALAPPDATA%\.ayushman\bin`, which is added to your PATH automatically on first install. Restart your terminal if the command isn't found immediately.
 
 ---
 
@@ -64,6 +58,7 @@ pdf-toolkit --help
 - Supports `install`, `list`, `upgrade`, `uninstall`, `info`, and `purge` commands
 - Minimal global state with JSON metadata
 - No build steps, scripts, or installers
+- Bootstrapped — installs and upgrades itself
 
 ---
 
@@ -76,42 +71,33 @@ pdf-toolkit --help
 
 ## Installation
 
-To install and run `ayushman` locally:
+### Bootstrapped (recommended)
 
-1. Clone the repository:
-
-   ```bash
-   git clone https://github.com/JourneyCodesAyush/ayushman.git
-   cd ayushman
-   ```
-
-2. (Recommended) Create and activate a virtual environment:
-
-   ```ps1
-   uv venv .venv --clear
-
-   # On Windows CMD:
-   .venv\Scripts\activate.bat
-
-   # On Windows PowerShell:
-   .\.venv\Scripts\Activate.ps1
-   ```
-
-3. Install dependencies:
-
-   ```bash
-   uv sync
-   ```
-
----
-
-## Development / Editable Install
-
-To install `ayushman` as a local command for development:
+Download the latest `ayushman-windows-x86_64.zip` from the [releases page](https://github.com/JourneyCodesAyush/ayushman/releases/latest), extract it, and run:
 
 ```powershell
+.\ayushman.exe install ayushman
+```
+
+AyushMan installs itself into `%LOCALAPPDATA%\.ayushman\bin` and patches your PATH. From this point, use `ayushman` globally from any terminal.
+
+To upgrade AyushMan itself later:
+
+```powershell
+ayushman upgrade ayushman
+```
+
+### From source (for development)
+
+Requires Python 3.11+ and [uv](https://github.com/astral-sh/uv).
+
+```powershell
+git clone https://github.com/JourneyCodesAyush/ayushman.git
+cd ayushman
+
 uv venv .venv --clear
 .\.venv\Scripts\Activate.ps1  # PowerShell
+# For CMD: .venv\Scripts\activate.bat
 
 uv sync
 uv pip install -e . --link-mode=copy
@@ -122,8 +108,7 @@ ayushman list
 Notes:
 
 - Editable mode (`-e`) makes your source code changes immediately available without reinstalling.
-- Make sure the virtual environment is activated; otherwise, `ayushman` won’t be on PATH.
-- After the first install, `%LOCALAPPDATA%\.ayushman\bin` is automatically added to the **user PATH** so all installed binaries work in new terminals.
+- Make sure the virtual environment is activated; otherwise, `ayushman` won't be on PATH.
 
 ---
 
@@ -208,10 +193,12 @@ ayushman available
 Available packages:
 
   occ          -  The Optimistic Compiler Collection - because every program deserves to succeed
+  lsz          -  ls in Zig
   sweep        -  Recursively find and delete unwanted folders like node_modules
   c-utils      -  Linux utilities commands rewritten for educational purposes
   cpp-cloc     -  Count lines of code for various languages
   passman      -  A local-first CLI password manager
+  ayushman     -  The AyushMan package manager itself
   mklicense    -  Generate license files for your projects from the command line
   pdf-toolkit  -  PDF manipulation utilities
 ```
@@ -263,7 +250,7 @@ If the change does not take effect immediately, restart your terminal or re-logi
 
 ## Package source & constraints
 
-- Packages are downloaded **only** from this [author](https://github.com/JourneyCodesAyush)’s repositories
+- Packages are downloaded **only** from this [author](https://github.com/JourneyCodesAyush)'s repositories
 - The **latest release** is selected automatically
 - ZIP assets must contain **binaries**
 - No scripts, installers, or post-install hooks are executed
@@ -318,7 +305,7 @@ AyushMan is designed for installing **trusted prebuilt Windows binaries** - not 
 AyushMan focuses on **safe, versioned, prebuilt Windows binaries**.
 No builds, no installers, no cross-platform abstraction — just install, run, and upgrade.
 
-For a deeper explanation of why `AyushMan` works this way, its design principles, and the [author](https://github.com/JourneyCodesAyush)’s philosophy on package management, see [PHILOSOPHY.md](PHILOSOPHY.md).
+For a deeper explanation of why `AyushMan` works this way, its design principles, and the [author](https://github.com/JourneyCodesAyush)'s philosophy on package management, see [PHILOSOPHY.md](PHILOSOPHY.md).
 
 ---
 
@@ -326,7 +313,7 @@ For a deeper explanation of why `AyushMan` works this way, its design principles
 
 This project is licensed under the [**MIT License**](./LICENSE).
 
-You’re free to use, modify, and distribute it.
+You're free to use, modify, and distribute it.
 
 > [!TIP]
 > A tag or mention of [JourneyCodesAyush](https://github.com/JourneyCodesAyush) is always appreciated.
